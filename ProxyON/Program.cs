@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
+
 
 namespace ProxyON
 {
@@ -14,9 +16,22 @@ namespace ProxyON
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FRMPrincipal());
+            bool aberta;
+
+            using (Mutex mtex = new Mutex(true, "CambioPE", out aberta))
+            {
+                if (aberta)
+                {
+                    Application.EnableVisualStyles();
+                    Application.SetCompatibleTextRenderingDefault(false);
+                    Application.Run(new FRMPrincipal());
+                    mtex.ReleaseMutex();
+                }
+                else
+                {
+                    MessageBox.Show("Xa se está a executar o aplicativo, só se pode exutar unha única instacia do mesmo");
+                }
+            }
         }
     }
 }

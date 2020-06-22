@@ -43,10 +43,15 @@
             this.MenuIconaNotificacion = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.menuMostrarAplicativo = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.menuPechar = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.menuON = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.menuPechar = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuPrincipal = new System.Windows.Forms.MenuStrip();
+            this.menuPrincipalOpcions = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuPrincipalIconizado = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuPrincipalPechar = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuIconaNotificacion.SuspendLayout();
+            this.menuPrincipal.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnOnOff
@@ -115,7 +120,7 @@
             this.chbDireccionsLocais.Name = "chbDireccionsLocais";
             this.chbDireccionsLocais.Size = new System.Drawing.Size(140, 17);
             this.chbDireccionsLocais.TabIndex = 9;
-            this.chbDireccionsLocais.Text = "Ignorar direccions locais";
+            this.chbDireccionsLocais.Text = "Ignorar direccións locais";
             this.chbDireccionsLocais.UseVisualStyleBackColor = true;
             // 
             // btnGardar
@@ -145,7 +150,7 @@
             this.toolStripSeparator2,
             this.menuPechar});
             this.MenuIconaNotificacion.Name = "MenuIconaNotificacion";
-            this.MenuIconaNotificacion.Size = new System.Drawing.Size(222, 104);
+            this.MenuIconaNotificacion.Size = new System.Drawing.Size(222, 82);
             // 
             // menuMostrarAplicativo
             // 
@@ -159,18 +164,6 @@
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(218, 6);
             // 
-            // menuPechar
-            // 
-            this.menuPechar.Name = "menuPechar";
-            this.menuPechar.Size = new System.Drawing.Size(221, 22);
-            this.menuPechar.Text = "Pechar";
-            this.menuPechar.Click += new System.EventHandler(this.menuPechar_Click);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(218, 6);
-            // 
             // menuON
             // 
             this.menuON.Name = "menuON";
@@ -178,11 +171,58 @@
             this.menuON.Text = "ON";
             this.menuON.Click += new System.EventHandler(this.menuON_Click);
             // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(218, 6);
+            // 
+            // menuPechar
+            // 
+            this.menuPechar.Name = "menuPechar";
+            this.menuPechar.Size = new System.Drawing.Size(221, 22);
+            this.menuPechar.Text = "Pechar";
+            this.menuPechar.Click += new System.EventHandler(this.menuPechar_Click);
+            // 
+            // menuPrincipal
+            // 
+            this.menuPrincipal.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuPrincipalOpcions,
+            this.menuPrincipalPechar});
+            this.menuPrincipal.Location = new System.Drawing.Point(0, 0);
+            this.menuPrincipal.Name = "menuPrincipal";
+            this.menuPrincipal.Size = new System.Drawing.Size(388, 24);
+            this.menuPrincipal.TabIndex = 11;
+            this.menuPrincipal.Text = "menuStrip1";
+            // 
+            // menuPrincipalOpcions
+            // 
+            this.menuPrincipalOpcions.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuPrincipalIconizado});
+            this.menuPrincipalOpcions.Name = "menuPrincipalOpcions";
+            this.menuPrincipalOpcions.Size = new System.Drawing.Size(63, 20);
+            this.menuPrincipalOpcions.Text = "Opcións";
+            // 
+            // menuPrincipalIconizado
+            // 
+            this.menuPrincipalIconizado.CheckOnClick = true;
+            this.menuPrincipalIconizado.Name = "menuPrincipalIconizado";
+            this.menuPrincipalIconizado.Size = new System.Drawing.Size(180, 22);
+            this.menuPrincipalIconizado.Text = "Iniciar iconizado";
+            this.menuPrincipalIconizado.Click += new System.EventHandler(this.menuPrincipalIconizado_Click);
+            // 
+            // menuPrincipalPechar
+            // 
+            this.menuPrincipalPechar.Name = "menuPrincipalPechar";
+            this.menuPrincipalPechar.Size = new System.Drawing.Size(55, 20);
+            this.menuPrincipalPechar.Text = "Pechar";
+            this.menuPrincipalPechar.Click += new System.EventHandler(this.pecharToolStripMenuItem_Click);
+            // 
             // FRMPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(388, 220);
+            this.Controls.Add(this.menuPrincipal);
             this.Controls.Add(this.btnGardar);
             this.Controls.Add(this.chbDireccionsLocais);
             this.Controls.Add(this.lblExcepcions);
@@ -193,13 +233,18 @@
             this.Controls.Add(this.tbServidor);
             this.Controls.Add(this.btnOnOff);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MainMenuStrip = this.menuPrincipal;
             this.MaximizeBox = false;
             this.Name = "FRMPrincipal";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ProxyON";
             this.Load += new System.EventHandler(this.FRMPrincipal_Load);
+            this.Shown += new System.EventHandler(this.FRMPrincipal_Shown);
             this.Resize += new System.EventHandler(this.FRMPrincipal_Resize);
             this.MenuIconaNotificacion.ResumeLayout(false);
+            this.menuPrincipal.ResumeLayout(false);
+            this.menuPrincipal.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -223,6 +268,10 @@
         private System.Windows.Forms.ToolStripMenuItem menuPechar;
         private System.Windows.Forms.ToolStripMenuItem menuON;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.MenuStrip menuPrincipal;
+        private System.Windows.Forms.ToolStripMenuItem menuPrincipalOpcions;
+        private System.Windows.Forms.ToolStripMenuItem menuPrincipalPechar;
+        private System.Windows.Forms.ToolStripMenuItem menuPrincipalIconizado;
     }
 }
 

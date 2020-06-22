@@ -9,12 +9,13 @@ namespace ProxyON
 {
     public partial class FRMPrincipal : Form
     {
+        #region VARIABLES
         /* ##########################################################################################################################
          * #
          * #  Variables globais
          * #
-         * ##########################################################################################################################/
-        
+         * ########################################################################################################################## */
+
         /****************************************************************************************************************************
          * Valores necesarios para refrescar o estado do PROXY
          ****************************************************************************************************************************/
@@ -35,19 +36,21 @@ namespace ProxyON
         string proxyOverrideClave = "ProxyOverride";
 
         /****************************************************************************************************************************
-         * Carga a información do ficheiro de configuración
+         * Configuración pr defecto
          ****************************************************************************************************************************/
-        string servidorActual = ConfigurationManager.AppSettings.Get("servidor");
-        string portoActual = ConfigurationManager.AppSettings.Get("porto");
-        string excepcionsActual = ConfigurationManager.AppSettings.Get("excepcions");
-        bool direccionsLocaisActual = Convert.ToBoolean(ConfigurationManager.AppSettings.Get("direccionsLocais"));
+        bool arrancarIconizado = false;
+        string servidorActual = "127.0.0.1";
+        string portoActual = "80";
+        string excepcionsActual = "";
+        bool direccionsLocaisActual = false;
+        #endregion
 
-
+        #region EVENTOS FORMULARIO
         /* ##########################################################################################################################
          * #
-         * #  Inicio da lóxica do programa
+         * #  Eventos de formulario
          * #
-         * ##########################################################################################################################/
+         * ########################################################################################################################## */
 
         /****************************************************************************************************************************
          * Inicaliza o formulario
@@ -58,16 +61,7 @@ namespace ProxyON
         }
 
         /****************************************************************************************************************************
-         * Cambia o estado do PROXY
-         ****************************************************************************************************************************/
-        private void onOff_Click(object sender, EventArgs e)
-        {
-            cambiarProxy();
-            estadoProxy();
-        }
-
-        /****************************************************************************************************************************
-         * Cambia o estado do PROXY
+         * Carga a información no formulario
          ****************************************************************************************************************************/
         private void FRMPrincipal_Load(object sender, EventArgs e)
         {
@@ -76,22 +70,60 @@ namespace ProxyON
         }
 
         /****************************************************************************************************************************
-         * Garda a información da conexión no ficheiro de configuración
+         * Aplica a configuración inicial do programa
          ****************************************************************************************************************************/
-        private void btnGardar_Click(object sender, EventArgs e)
+        private void FRMPrincipal_Shown(object sender, EventArgs e)
         {
-            gardarOpcions();
+
+            // Oculta (ou non) o formulario
+            this.Visible = !arrancarIconizado;
         }
+
+        /****************************************************************************************************************************
+         * Oculta o formulario principal ao minimizalo
+         ****************************************************************************************************************************/
+        private void FRMPrincipal_Resize(object sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Minimized)
+            {
+                this.Visible = false;
+            }
+        }
+
+        #endregion
+
+        #region CONFIGURACIÓN
+        /* ##########################################################################################################################
+         * #
+         * #  Configuración do programa
+         * #
+         * ########################################################################################################################## */
 
         /****************************************************************************************************************************
          * Carga a información do ficheiro de configuración nos cadros de texto
          ****************************************************************************************************************************/
         private void cargarOpcions()
         {
-            tbServidor.Text = servidorActual;
-            tbPorto.Text = portoActual;
-            tbExcepcions.Text = excepcionsActual;
-            chbDireccionsLocais.Checked = direccionsLocaisActual;
+            try
+            {
+                // Carga a información do ficheiro de configuración
+                arrancarIconizado = Convert.ToBoolean(ConfigurationManager.AppSettings.Get("iconizado"));
+                servidorActual = ConfigurationManager.AppSettings.Get("servidor");
+                portoActual = ConfigurationManager.AppSettings.Get("porto");
+                excepcionsActual = ConfigurationManager.AppSettings.Get("excepcions");
+                direccionsLocaisActual = Convert.ToBoolean(ConfigurationManager.AppSettings.Get("direccionsLocais"));
+
+                // Asigna os datos ó formulario
+                tbServidor.Text = servidorActual;
+                tbPorto.Text = portoActual;
+                tbExcepcions.Text = excepcionsActual;
+                chbDireccionsLocais.Checked = direccionsLocaisActual;
+
+                // Mostra a información no menú
+                menuPrincipalIconizado.Checked = arrancarIconizado;
+            }
+            catch
+            { }
         }
 
         /****************************************************************************************************************************
@@ -99,13 +131,28 @@ namespace ProxyON
          ****************************************************************************************************************************/
         private void gardarOpcions()
         {
-            Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            config.AppSettings.Settings["servidor"].Value = tbServidor.Text;
-            config.AppSettings.Settings["porto"].Value = tbPorto.Text;
-            config.AppSettings.Settings["excepcions"].Value = tbExcepcions.Text;
-            config.AppSettings.Settings["direccionsLocais"].Value = (chbDireccionsLocais.Checked) ? "true" : "false";
-            config.Save(ConfigurationSaveMode.Modified);
+            try
+            {
+                Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                config.AppSettings.Settings["servidor"].Value = tbServidor.Text;
+                config.AppSettings.Settings["porto"].Value = tbPorto.Text;
+                config.AppSettings.Settings["excepcions"].Value = tbExcepcions.Text;
+                config.AppSettings.Settings["direccionsLocais"].Value = (chbDireccionsLocais.Checked) ? "true" : "false";
+                config.Save(ConfigurationSaveMode.Modified);
+            }
+            catch
+            {
+                MessageBox.Show("Non se atopou o ficheiro de configuración", "Erro ó gardar a configuración");
+            }
         }
+        #endregion
+
+        #region LÓXICA
+        /* ##########################################################################################################################
+         * #
+         * #  Inicio da lóxica do programa
+         * #
+         * ########################################################################################################################## */
 
         /****************************************************************************************************************************
          * Estado do PROXY
@@ -207,23 +254,72 @@ namespace ProxyON
             catch
             { }
         }
+        #endregion
 
+        #region BOTÓNS
+        /* ##########################################################################################################################
+         * #
+         * #  Eventos de botóns
+         * #
+         * ########################################################################################################################## */
+
+        /****************************************************************************************************************************
+         * Cambia o estado do PROXY
+         ****************************************************************************************************************************/
+        private void onOff_Click(object sender, EventArgs e)
+        {
+            cambiarProxy();
+            estadoProxy();
+        }
+
+        /****************************************************************************************************************************
+         * Garda a información da conexión no ficheiro de configuración
+         ****************************************************************************************************************************/
+        private void btnGardar_Click(object sender, EventArgs e)
+        {
+            gardarOpcions();
+        }
+        #endregion
+
+        #region MENU PRINCIPAL
+        /* ##########################################################################################################################
+         * #
+         * #  Menú Formulario principal
+         * #
+         * ########################################################################################################################## */
+
+        /****************************************************************************************************************************
+         * Establece se se debe mostrar o formulario ó iniciar a aplicación ou non
+         ****************************************************************************************************************************/
+        private void menuPrincipalIconizado_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                config.AppSettings.Settings["iconizado"].Value = (menuPrincipalIconizado.Checked) ? "true" : "false";
+                config.Save(ConfigurationSaveMode.Modified);
+            }
+            catch
+            {
+                MessageBox.Show("Non se atopou o ficheiro de configuración", "Erro ó gardar a configuración");
+            }
+        }
+
+        /****************************************************************************************************************************
+         * Sae da aplicación
+         ****************************************************************************************************************************/
+        private void pecharToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Dispose();
+        }
+        #endregion
+
+        #region ÁREA DE NOTIFICACIÓN
         /* ##########################################################################################################################
          * #
          * #  Área de notificación
          * #
-         * ##########################################################################################################################/
-
-        /****************************************************************************************************************************
-         * Oculta o formulario principal ao minimizalo
-         ****************************************************************************************************************************/
-        private void FRMPrincipal_Resize(object sender, EventArgs e)
-        {
-            if (this.WindowState == FormWindowState.Minimized)
-            {
-                this.Visible = false;
-            }
-        }
+         * ########################################################################################################################## */
 
         /****************************************************************************************************************************
          * Cambia o estado do PROXY
@@ -262,6 +358,6 @@ namespace ProxyON
         {
             this.Dispose();
         }
-
+        #endregion
     }
 }
