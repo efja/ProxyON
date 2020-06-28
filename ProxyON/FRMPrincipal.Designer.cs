@@ -50,6 +50,7 @@
             this.menuPrincipalOpcions = new System.Windows.Forms.ToolStripMenuItem();
             this.menuPrincipalIconizado = new System.Windows.Forms.ToolStripMenuItem();
             this.menuPrincipalPechar = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuPrincipalInicioWindows = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuIconaNotificacion.SuspendLayout();
             this.menuPrincipal.SuspendLayout();
             this.SuspendLayout();
@@ -197,7 +198,8 @@
             // menuPrincipalOpcions
             // 
             this.menuPrincipalOpcions.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuPrincipalIconizado});
+            this.menuPrincipalIconizado,
+            this.menuPrincipalInicioWindows});
             this.menuPrincipalOpcions.Name = "menuPrincipalOpcions";
             this.menuPrincipalOpcions.Size = new System.Drawing.Size(63, 20);
             this.menuPrincipalOpcions.Text = "Opcións";
@@ -206,7 +208,7 @@
             // 
             this.menuPrincipalIconizado.CheckOnClick = true;
             this.menuPrincipalIconizado.Name = "menuPrincipalIconizado";
-            this.menuPrincipalIconizado.Size = new System.Drawing.Size(180, 22);
+            this.menuPrincipalIconizado.Size = new System.Drawing.Size(181, 22);
             this.menuPrincipalIconizado.Text = "Iniciar iconizado";
             this.menuPrincipalIconizado.Click += new System.EventHandler(this.menuPrincipalIconizado_Click);
             // 
@@ -216,6 +218,14 @@
             this.menuPrincipalPechar.Size = new System.Drawing.Size(55, 20);
             this.menuPrincipalPechar.Text = "Pechar";
             this.menuPrincipalPechar.Click += new System.EventHandler(this.pecharToolStripMenuItem_Click);
+            // 
+            // menuPrincipalInicioWindows
+            // 
+            this.menuPrincipalInicioWindows.CheckOnClick = true;
+            this.menuPrincipalInicioWindows.Name = "menuPrincipalInicioWindows";
+            this.menuPrincipalInicioWindows.Size = new System.Drawing.Size(181, 22);
+            this.menuPrincipalInicioWindows.Text = "Iniciar con Windows";
+            this.menuPrincipalInicioWindows.Click += new System.EventHandler(this.menuPrincipalInicioWindows_Click);
             // 
             // FRMPrincipal
             // 
@@ -272,6 +282,7 @@
         private System.Windows.Forms.ToolStripMenuItem menuPrincipalOpcions;
         private System.Windows.Forms.ToolStripMenuItem menuPrincipalPechar;
         private System.Windows.Forms.ToolStripMenuItem menuPrincipalIconizado;
+        private System.Windows.Forms.ToolStripMenuItem menuPrincipalInicioWindows;
     }
 }
 

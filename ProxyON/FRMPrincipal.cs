@@ -5,6 +5,11 @@ using Microsoft.Win32;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 
+using System.Security.Permissions;
+using System.Security.AccessControl;
+using System.Security.Principal;
+using System.Diagnostics;
+
 namespace ProxyON
 {
     public partial class FRMPrincipal : Form
@@ -25,8 +30,12 @@ namespace ProxyON
         public const int INTERNET_OPTION_REFRESH = 37;
         static bool settingsReturn, refreshReturn;
 
-        // Valores da configuración do PROXY 
-        string configuracionInternet = "Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings";
+        // Valores da configuración para o inicio con Windows
+        string inicioWindows = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";
+        string inicioWindowsClave = "ProxyON";
+
+        // Valores da configuración do PROXY
+        string configuracionInternet = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Internet Settings";
         string proxyEnableClave = "ProxyEnable";
         int proxyEnableValorON = 1;
         int proxyEnableValorOFF = 0;
@@ -121,6 +130,7 @@ namespace ProxyON
 
                 // Mostra a información no menú
                 menuPrincipalIconizado.Checked = arrancarIconizado;
+                comprobarIniciarWin();
             }
             catch
             { }
@@ -155,11 +165,133 @@ namespace ProxyON
          * ########################################################################################################################## */
 
         /****************************************************************************************************************************
+         * Cambia a execución do programa a administrador
+         ****************************************************************************************************************************/
+        private void executarAdmin()
+        {
+            WindowsPrincipal pricipal = new WindowsPrincipal(WindowsIdentity.GetCurrent());
+            bool hasAdministrativeRight = pricipal.IsInRole(WindowsBuiltInRole.Administrator);
+            if (!hasAdministrativeRight)
+            {
+                // relaunch the application with admin rights
+                string fileName = System.Reflection.Assembly.GetExecutingAssembly().Location;
+                ProcessStartInfo processInfo = new ProcessStartInfo();
+                processInfo.Verb = "runas";
+                processInfo.FileName = fileName;
+
+                try
+                {
+                    this.Close();
+                    Process.Start(processInfo);
+                }
+                catch
+                { }
+
+            }
+        }
+
+        /****************************************************************************************************************************
+         * Comproba o estado inicio da aplicación con Windows
+         * 
+         * return:  0   non inicia con Windows
+         *          1   inicia co usuario actual
+         *          2   inicia co sistema
+         ****************************************************************************************************************************/
+        private int comprobarIniciarWin()
+        {
+            int arrancarWindows = 0;
+            string valor = "";
+            try
+            {
+                RegistryKey registry = Registry.CurrentUser.OpenSubKey(inicioWindows);
+                valor = (string)registry.GetValue(inicioWindowsClave);
+                if (valor != null)
+                {
+                    arrancarWindows = 1;
+                }
+                else
+                {
+                    registry = Registry.LocalMachine.OpenSubKey(inicioWindows);
+                    valor = (string)registry.GetValue(inicioWindowsClave);
+                    if (valor != null)
+                    {
+                        arrancarWindows = 2;
+                    }
+                }
+
+                registry.Close();
+            }
+            catch
+            { }
+
+            // Establece o valor do estado do menú
+            menuPrincipalInicioWindows.Checked = (arrancarWindows > 0) ? true : false;
+            return arrancarWindows;
+        }
+
+        /****************************************************************************************************************************
+         * Facer que a aplicación inicie con Windows
+         ****************************************************************************************************************************/
+        private void iniciarWindows()
+        {
+            RegistryKey inicio = null;
+
+            try
+            {
+                switch (comprobarIniciarWin())
+                {
+                    case 0:
+                        FRMInicarWindows dialogo = new FRMInicarWindows();
+
+                        dialogo.ShowDialog();
+
+                        switch (dialogo.DialogResult)
+                        {
+                            case DialogResult.Yes:
+                                inicio = Registry.CurrentUser.OpenSubKey(inicioWindows, true);
+                                break;
+                            case DialogResult.No:
+                                executarAdmin();
+                                inicio = Registry.LocalMachine.OpenSubKey(inicioWindows, true);
+                                break;
+                            case DialogResult.Cancel:
+                                return;
+                        }
+
+                        inicio.SetValue(inicioWindowsClave, System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase, RegistryValueKind.String);
+                        break;
+                    case 1:
+                        inicio = Registry.CurrentUser.OpenSubKey(inicioWindows, true);
+                        inicio.DeleteValue(inicioWindowsClave);
+                        break;
+                    case 2:
+                        executarAdmin();
+                        inicio = Registry.LocalMachine.OpenSubKey(inicioWindows, true);
+                        inicio.DeleteValue(inicioWindowsClave);
+                        break;
+                }
+
+                if (inicio != null)
+                {
+                    inicio.Close();
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
+
+            comprobarIniciarWin();
+        }
+
+        /****************************************************************************************************************************
          * Estado do PROXY
          ****************************************************************************************************************************/
         private int estadoProxy()
         {
             int status = 0;
+
+            // Cambios de estética
             string cadeaActivarProxy = "Activar PROXY";
             string cadeaDesactivarProxy = "Desactivar PROXY";
 
@@ -169,7 +301,7 @@ namespace ProxyON
             try
             {
                 RegistryKey registry = Registry.CurrentUser.OpenSubKey(configuracionInternet, true);
-                status = (int)registry.GetValue("ProxyEnable");
+                status = (int)registry.GetValue(proxyEnableClave);
                 if (status == 0)
                 {
                     btnOnOff.Text = cadeaActivarProxy;
@@ -303,6 +435,14 @@ namespace ProxyON
             {
                 MessageBox.Show("Non se atopou o ficheiro de configuración", "Erro ó gardar a configuración");
             }
+        }
+
+        /****************************************************************************************************************************
+         * Establece se se debe arrancar a aplicación con windows ou non
+         ****************************************************************************************************************************/
+        private void menuPrincipalInicioWindows_Click(object sender, EventArgs e)
+        {
+            iniciarWindows();
         }
 
         /****************************************************************************************************************************

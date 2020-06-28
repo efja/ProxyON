@@ -51,6 +51,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FRMDialogoIniciarWindows.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FRMDialogoIniciarWindows.Designer.cs">
+      <DependentUpon>FRMDialogoIniciarWindows.cs</DependentUpon>
+    </Compile>
     <Compile Include="FRMPrincipal.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -59,6 +65,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="FRMDialogoIniciarWindows.resx">
+      <DependentUpon>FRMDialogoIniciarWindows.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FRMPrincipal.resx">
       <DependentUpon>FRMPrincipal.cs</DependentUpon>
     </EmbeddedResource>
