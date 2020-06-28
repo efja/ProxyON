@@ -31,14 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FRMPrincipal));
             this.btnOnOff = new System.Windows.Forms.Button();
-            this.tbServidor = new System.Windows.Forms.TextBox();
-            this.tbPorto = new System.Windows.Forms.TextBox();
-            this.tbExcepcions = new System.Windows.Forms.TextBox();
-            this.lblServidor = new System.Windows.Forms.Label();
-            this.lblPorto = new System.Windows.Forms.Label();
-            this.lblExcepcions = new System.Windows.Forms.Label();
-            this.chbDireccionsLocais = new System.Windows.Forms.CheckBox();
-            this.btnGardar = new System.Windows.Forms.Button();
+            this.lblPerfil = new System.Windows.Forms.Label();
             this.IconaNotificacion = new System.Windows.Forms.NotifyIcon(this.components);
             this.MenuIconaNotificacion = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.menuMostrarAplicativo = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,90 +42,34 @@
             this.menuPrincipal = new System.Windows.Forms.MenuStrip();
             this.menuPrincipalOpcions = new System.Windows.Forms.ToolStripMenuItem();
             this.menuPrincipalIconizado = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuPrincipalPechar = new System.Windows.Forms.ToolStripMenuItem();
             this.menuPrincipalInicioWindows = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuPrincipalPechar = new System.Windows.Forms.ToolStripMenuItem();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.btnEngadirPerfil = new System.Windows.Forms.Button();
+            this.btnBorrarPerfil = new System.Windows.Forms.Button();
+            this.chbSeleccionado = new System.Windows.Forms.CheckBox();
             this.MenuIconaNotificacion.SuspendLayout();
             this.menuPrincipal.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnOnOff
             // 
-            this.btnOnOff.Location = new System.Drawing.Point(197, 159);
+            this.btnOnOff.Location = new System.Drawing.Point(100, 92);
             this.btnOnOff.Name = "btnOnOff";
-            this.btnOnOff.Size = new System.Drawing.Size(148, 38);
+            this.btnOnOff.Size = new System.Drawing.Size(189, 38);
             this.btnOnOff.TabIndex = 0;
             this.btnOnOff.Text = "ON";
             this.btnOnOff.UseVisualStyleBackColor = true;
             this.btnOnOff.Click += new System.EventHandler(this.onOff_Click);
             // 
-            // tbServidor
+            // lblPerfil
             // 
-            this.tbServidor.Location = new System.Drawing.Point(70, 24);
-            this.tbServidor.Name = "tbServidor";
-            this.tbServidor.Size = new System.Drawing.Size(159, 20);
-            this.tbServidor.TabIndex = 3;
-            // 
-            // tbPorto
-            // 
-            this.tbPorto.Location = new System.Drawing.Point(295, 24);
-            this.tbPorto.Name = "tbPorto";
-            this.tbPorto.Size = new System.Drawing.Size(81, 20);
-            this.tbPorto.TabIndex = 4;
-            // 
-            // tbExcepcions
-            // 
-            this.tbExcepcions.Location = new System.Drawing.Point(15, 72);
-            this.tbExcepcions.Multiline = true;
-            this.tbExcepcions.Name = "tbExcepcions";
-            this.tbExcepcions.Size = new System.Drawing.Size(361, 58);
-            this.tbExcepcions.TabIndex = 5;
-            // 
-            // lblServidor
-            // 
-            this.lblServidor.AutoSize = true;
-            this.lblServidor.Location = new System.Drawing.Point(12, 28);
-            this.lblServidor.Name = "lblServidor";
-            this.lblServidor.Size = new System.Drawing.Size(49, 13);
-            this.lblServidor.TabIndex = 6;
-            this.lblServidor.Text = "Servidor:";
-            // 
-            // lblPorto
-            // 
-            this.lblPorto.AutoSize = true;
-            this.lblPorto.Location = new System.Drawing.Point(254, 27);
-            this.lblPorto.Name = "lblPorto";
-            this.lblPorto.Size = new System.Drawing.Size(35, 13);
-            this.lblPorto.TabIndex = 7;
-            this.lblPorto.Text = "Porto:";
-            // 
-            // lblExcepcions
-            // 
-            this.lblExcepcions.AutoSize = true;
-            this.lblExcepcions.Location = new System.Drawing.Point(12, 56);
-            this.lblExcepcions.Name = "lblExcepcions";
-            this.lblExcepcions.Size = new System.Drawing.Size(194, 13);
-            this.lblExcepcions.TabIndex = 8;
-            this.lblExcepcions.Text = "Excepcións (separa os valores con \";\"):";
-            // 
-            // chbDireccionsLocais
-            // 
-            this.chbDireccionsLocais.AutoSize = true;
-            this.chbDireccionsLocais.Location = new System.Drawing.Point(15, 136);
-            this.chbDireccionsLocais.Name = "chbDireccionsLocais";
-            this.chbDireccionsLocais.Size = new System.Drawing.Size(140, 17);
-            this.chbDireccionsLocais.TabIndex = 9;
-            this.chbDireccionsLocais.Text = "Ignorar direccións locais";
-            this.chbDireccionsLocais.UseVisualStyleBackColor = true;
-            // 
-            // btnGardar
-            // 
-            this.btnGardar.Location = new System.Drawing.Point(43, 159);
-            this.btnGardar.Name = "btnGardar";
-            this.btnGardar.Size = new System.Drawing.Size(148, 38);
-            this.btnGardar.TabIndex = 10;
-            this.btnGardar.Text = "GARDAR DATOS";
-            this.btnGardar.UseVisualStyleBackColor = true;
-            this.btnGardar.Click += new System.EventHandler(this.btnGardar_Click);
+            this.lblPerfil.AutoSize = true;
+            this.lblPerfil.Location = new System.Drawing.Point(13, 37);
+            this.lblPerfil.Name = "lblPerfil";
+            this.lblPerfil.Size = new System.Drawing.Size(33, 13);
+            this.lblPerfil.TabIndex = 6;
+            this.lblPerfil.Text = "Perfil:";
             // 
             // IconaNotificacion
             // 
@@ -191,7 +128,7 @@
             this.menuPrincipalPechar});
             this.menuPrincipal.Location = new System.Drawing.Point(0, 0);
             this.menuPrincipal.Name = "menuPrincipal";
-            this.menuPrincipal.Size = new System.Drawing.Size(388, 24);
+            this.menuPrincipal.Size = new System.Drawing.Size(389, 24);
             this.menuPrincipal.TabIndex = 11;
             this.menuPrincipal.Text = "menuStrip1";
             // 
@@ -212,13 +149,6 @@
             this.menuPrincipalIconizado.Text = "Iniciar iconizado";
             this.menuPrincipalIconizado.Click += new System.EventHandler(this.menuPrincipalIconizado_Click);
             // 
-            // menuPrincipalPechar
-            // 
-            this.menuPrincipalPechar.Name = "menuPrincipalPechar";
-            this.menuPrincipalPechar.Size = new System.Drawing.Size(55, 20);
-            this.menuPrincipalPechar.Text = "Pechar";
-            this.menuPrincipalPechar.Click += new System.EventHandler(this.pecharToolStripMenuItem_Click);
-            // 
             // menuPrincipalInicioWindows
             // 
             this.menuPrincipalInicioWindows.CheckOnClick = true;
@@ -227,20 +157,60 @@
             this.menuPrincipalInicioWindows.Text = "Iniciar con Windows";
             this.menuPrincipalInicioWindows.Click += new System.EventHandler(this.menuPrincipalInicioWindows_Click);
             // 
+            // menuPrincipalPechar
+            // 
+            this.menuPrincipalPechar.Name = "menuPrincipalPechar";
+            this.menuPrincipalPechar.Size = new System.Drawing.Size(55, 20);
+            this.menuPrincipalPechar.Text = "Pechar";
+            this.menuPrincipalPechar.Click += new System.EventHandler(this.pecharToolStripMenuItem_Click);
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(52, 33);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(251, 21);
+            this.comboBox1.TabIndex = 12;
+            // 
+            // btnEngadirPerfil
+            // 
+            this.btnEngadirPerfil.Location = new System.Drawing.Point(304, 32);
+            this.btnEngadirPerfil.Name = "btnEngadirPerfil";
+            this.btnEngadirPerfil.Size = new System.Drawing.Size(35, 23);
+            this.btnEngadirPerfil.TabIndex = 13;
+            this.btnEngadirPerfil.Text = "+";
+            this.btnEngadirPerfil.UseVisualStyleBackColor = true;
+            // 
+            // btnBorrarPerfil
+            // 
+            this.btnBorrarPerfil.Location = new System.Drawing.Point(340, 32);
+            this.btnBorrarPerfil.Name = "btnBorrarPerfil";
+            this.btnBorrarPerfil.Size = new System.Drawing.Size(35, 23);
+            this.btnBorrarPerfil.TabIndex = 14;
+            this.btnBorrarPerfil.Text = "-";
+            this.btnBorrarPerfil.UseVisualStyleBackColor = true;
+            // 
+            // chbSeleccionado
+            // 
+            this.chbSeleccionado.AutoSize = true;
+            this.chbSeleccionado.Location = new System.Drawing.Point(52, 60);
+            this.chbSeleccionado.Name = "chbSeleccionado";
+            this.chbSeleccionado.Size = new System.Drawing.Size(133, 17);
+            this.chbSeleccionado.TabIndex = 19;
+            this.chbSeleccionado.Text = "Selecionar por defecto";
+            this.chbSeleccionado.UseVisualStyleBackColor = true;
+            // 
             // FRMPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(388, 220);
+            this.ClientSize = new System.Drawing.Size(389, 142);
+            this.Controls.Add(this.chbSeleccionado);
+            this.Controls.Add(this.btnBorrarPerfil);
+            this.Controls.Add(this.btnEngadirPerfil);
+            this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.menuPrincipal);
-            this.Controls.Add(this.btnGardar);
-            this.Controls.Add(this.chbDireccionsLocais);
-            this.Controls.Add(this.lblExcepcions);
-            this.Controls.Add(this.lblPorto);
-            this.Controls.Add(this.lblServidor);
-            this.Controls.Add(this.tbExcepcions);
-            this.Controls.Add(this.tbPorto);
-            this.Controls.Add(this.tbServidor);
+            this.Controls.Add(this.lblPerfil);
             this.Controls.Add(this.btnOnOff);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -263,14 +233,7 @@
         #endregion
 
         private System.Windows.Forms.Button btnOnOff;
-        private System.Windows.Forms.TextBox tbServidor;
-        private System.Windows.Forms.TextBox tbPorto;
-        private System.Windows.Forms.TextBox tbExcepcions;
-        private System.Windows.Forms.Label lblServidor;
-        private System.Windows.Forms.Label lblPorto;
-        private System.Windows.Forms.Label lblExcepcions;
-        private System.Windows.Forms.CheckBox chbDireccionsLocais;
-        private System.Windows.Forms.Button btnGardar;
+        private System.Windows.Forms.Label lblPerfil;
         private System.Windows.Forms.NotifyIcon IconaNotificacion;
         private System.Windows.Forms.ContextMenuStrip MenuIconaNotificacion;
         private System.Windows.Forms.ToolStripMenuItem menuMostrarAplicativo;
@@ -283,6 +246,10 @@
         private System.Windows.Forms.ToolStripMenuItem menuPrincipalPechar;
         private System.Windows.Forms.ToolStripMenuItem menuPrincipalIconizado;
         private System.Windows.Forms.ToolStripMenuItem menuPrincipalInicioWindows;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Button btnEngadirPerfil;
+        private System.Windows.Forms.Button btnBorrarPerfil;
+        private System.Windows.Forms.CheckBox chbSeleccionado;
     }
 }
 

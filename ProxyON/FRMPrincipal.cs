@@ -48,6 +48,8 @@ namespace ProxyON
          * Configuración pr defecto
          ****************************************************************************************************************************/
         bool arrancarIconizado = false;
+        string perfiles = "Perfiles";
+
         string servidorActual = "127.0.0.1";
         string portoActual = "80";
         string excepcionsActual = "";
@@ -117,17 +119,20 @@ namespace ProxyON
             {
                 // Carga a información do ficheiro de configuración
                 arrancarIconizado = Convert.ToBoolean(ConfigurationManager.AppSettings.Get("iconizado"));
+                perfiles = ConfigurationManager.AppSettings.Get("perfiles");
+
                 servidorActual = ConfigurationManager.AppSettings.Get("servidor");
                 portoActual = ConfigurationManager.AppSettings.Get("porto");
                 excepcionsActual = ConfigurationManager.AppSettings.Get("excepcions");
                 direccionsLocaisActual = Convert.ToBoolean(ConfigurationManager.AppSettings.Get("direccionsLocais"));
 
                 // Asigna os datos ó formulario
+                /*
                 tbServidor.Text = servidorActual;
                 tbPorto.Text = portoActual;
                 tbExcepcions.Text = excepcionsActual;
                 chbDireccionsLocais.Checked = direccionsLocaisActual;
-
+                */
                 // Mostra a información no menú
                 menuPrincipalIconizado.Checked = arrancarIconizado;
                 comprobarIniciarWin();
@@ -144,11 +149,13 @@ namespace ProxyON
             try
             {
                 Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                /*
                 config.AppSettings.Settings["servidor"].Value = tbServidor.Text;
                 config.AppSettings.Settings["porto"].Value = tbPorto.Text;
                 config.AppSettings.Settings["excepcions"].Value = tbExcepcions.Text;
                 config.AppSettings.Settings["direccionsLocais"].Value = (chbDireccionsLocais.Checked) ? "true" : "false";
                 config.Save(ConfigurationSaveMode.Modified);
+                */
             }
             catch
             {
@@ -337,17 +344,17 @@ namespace ProxyON
             string proxyServerValor = "";
             string proxyOverrideValor = "";
 
-            if (!tbServidor.Text.Equals("") && !tbPorto.Text.Equals(""))
+            if (!servidorActual.Equals("") && !portoActual.Equals(""))
             {
-                proxyServerValor = tbServidor.Text + ":" + tbPorto.Text;
+                proxyServerValor = servidorActual + ":" + portoActual;
             }
 
-            if (!tbExcepcions.Text.Equals(""))
+            if (!excepcionsActual.Equals(""))
             {
-                proxyOverrideValor = tbExcepcions.Text;
+                proxyOverrideValor = excepcionsActual;
             }
 
-            if (chbDireccionsLocais.Checked)
+            if (direccionsLocaisActual)
             {
                 string pecharExcepcions = "";
                 if (proxyOverrideValor.Length > 0)

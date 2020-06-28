@@ -51,11 +51,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FRMDialogoIniciarWindows.cs">
+    <Compile Include="Perfil.cs" />
+    <Compile Include="Operacions.cs" />
+    <Compile Include="DLGPerfil.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FRMDialogoIniciarWindows.Designer.cs">
-      <DependentUpon>FRMDialogoIniciarWindows.cs</DependentUpon>
+    <Compile Include="DLGPerfil.Designer.cs">
+      <DependentUpon>DLGPerfil.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DLGIniciarWindows.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DLGIniciarWindows.Designer.cs">
+      <DependentUpon>DLGIniciarWindows.cs</DependentUpon>
     </Compile>
     <Compile Include="FRMPrincipal.cs">
       <SubType>Form</SubType>
@@ -65,8 +73,11 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="FRMDialogoIniciarWindows.resx">
-      <DependentUpon>FRMDialogoIniciarWindows.cs</DependentUpon>
+    <EmbeddedResource Include="DLGPerfil.resx">
+      <DependentUpon>DLGPerfil.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DLGIniciarWindows.resx">
+      <DependentUpon>DLGIniciarWindows.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FRMPrincipal.resx">
       <DependentUpon>FRMPrincipal.cs</DependentUpon>
