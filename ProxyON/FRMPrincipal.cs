@@ -49,17 +49,11 @@ namespace ProxyON
          * Configuración pr defecto
          ****************************************************************************************************************************/
         private bool arrancarIconizado = false;
-        private string perfiles;
-        private Dictionary<string, Perfil> listadoPerfiles = new Dictionary<string, Perfil>();
-
-        /*
-        private string servidorActual;
-        private string portoActual;
-        private string excepcionsActual;
-        private bool direccionsLocaisActual;
-        */
 
         private Operacions operacions;
+        private string directorioPerfiles;
+
+        private Dictionary<string, Perfil> listadoPerfiles = new Dictionary<string, Perfil>();
         private Perfil perfilActual;
         #endregion
 
@@ -85,7 +79,7 @@ namespace ProxyON
         {
             estadoProxy();
             cargarOpcions();
-            operacions = new Operacions(perfiles);
+            operacions = new Operacions(directorioPerfiles);
 
             operacions.cargarListaPerfiles();
 
@@ -151,7 +145,7 @@ namespace ProxyON
             {
                 // Carga a información do ficheiro de configuración
                 arrancarIconizado = Convert.ToBoolean(ConfigurationManager.AppSettings.Get("iconizado"));
-                perfiles = ConfigurationManager.AppSettings.Get("perfiles");
+                directorioPerfiles = ConfigurationManager.AppSettings.Get("perfiles");
 
                 // Mostra a información no menú
                 menuPrincipalIconizado.Checked = arrancarIconizado;
@@ -170,14 +164,7 @@ namespace ProxyON
         {
             try
             {
-                Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-                /*
-                config.AppSettings.Settings["servidor"].Value = tbServidor.Text;
-                config.AppSettings.Settings["porto"].Value = tbPorto.Text;
-                config.AppSettings.Settings["excepcions"].Value = tbExcepcions.Text;
-                config.AppSettings.Settings["direccionsLocais"].Value = (chbDireccionsLocais.Checked) ? "true" : "false";
-                config.Save(ConfigurationSaveMode.Modified);
-                */
+
             }
             catch
             {
@@ -285,7 +272,7 @@ namespace ProxyON
                 switch (comprobarIniciarWin())
                 {
                     case 0:
-                        FRMInicarWindows dialogo = new FRMInicarWindows();
+                        DLGIniciarWindows dialogo = new DLGIniciarWindows();
 
                         dialogo.ShowDialog();
 
@@ -342,10 +329,13 @@ namespace ProxyON
             Color corActivarProxy = Color.Maroon;
             Color corDesactivarProxy = Color.Green;
 
+            // mentres non se implemente a funcionalidade queda desactivado sempre
+            chbSeleccionado.Enabled = false;
             try
             {
                 RegistryKey registry = Registry.CurrentUser.OpenSubKey(configuracionInternet, true);
                 status = (int)registry.GetValue(proxyEnableClave);
+
                 if (status == 0)
                 {
                     btnOnOff.Text = cadeaActivarProxy;
@@ -354,6 +344,10 @@ namespace ProxyON
                     menuON.Text = cadeaActivarProxy;
                     menuON.ForeColor = corActivarProxy;
                     IconaNotificacion.Icon = Properties.Resources.NotifyIconGrey;
+
+                    activarTSPrincipal(true);
+                    cmboxPerfiles.Enabled = true;
+                    // chbSeleccionado.Enabled = true; // mentres non se implemente a funcionalidade queda desactivado sempre
                 }
                 else
                 {
@@ -363,6 +357,10 @@ namespace ProxyON
                     menuON.Text = cadeaDesactivarProxy;
                     menuON.ForeColor = corDesactivarProxy;
                     IconaNotificacion.Icon = Properties.Resources.NotifyIcon;
+
+                    activarTSPrincipal(false);
+                    cmboxPerfiles.Enabled = false;
+                    chbSeleccionado.Enabled = false;
                 }
 
                 registry.Close();
@@ -451,14 +449,6 @@ namespace ProxyON
             cambiarProxy();
             estadoProxy();
         }
-
-        /****************************************************************************************************************************
-         * Garda a información da conexión no ficheiro de configuración
-         ****************************************************************************************************************************/
-        private void btnGardar_Click(object sender, EventArgs e)
-        {
-            gardarOpcions();
-        }
         #endregion
 
         #region MENU PRINCIPAL
@@ -467,6 +457,16 @@ namespace ProxyON
          * #  Menú Formulario principal
          * #
          * ########################################################################################################################## */
+
+        /****************************************************************************************************************************
+         * Cambia o estado dos botóns da cinta que non se poden activar se o PROXY está activado
+         ****************************************************************************************************************************/
+        private void activarTSPrincipal(bool activado)
+        {
+            tsBtnModificar.Enabled = activado;
+            tsBtnEliminar.Enabled = activado;
+            tsBtnDirPerfiles.Enabled = activado;
+        }
 
         /****************************************************************************************************************************
          * Establece se se debe mostrar o formulario ó iniciar a aplicación ou non
@@ -483,6 +483,53 @@ namespace ProxyON
             {
                 MessageBox.Show("Non se atopou o ficheiro de configuración", "Erro ó gardar a configuración");
             }
+        }
+
+        /****************************************************************************************************************************
+         * Abre un subformulario para engadir un novo perfil
+         ****************************************************************************************************************************/
+        private void tsBtnEngadir_Click(object sender, EventArgs e)
+        {
+            DLGPerfil frmAux = new DLGPerfil();
+            frmAux.ShowDialog();
+        }
+
+
+        /****************************************************************************************************************************
+         * Abre un subformulario cos datos do perfil activo para modificalo
+         ****************************************************************************************************************************/
+        private void tsBtnModificar_Click(object sender, EventArgs e)
+        {
+            DLGPerfil frmAux = new DLGPerfil();
+
+            // Carganse os datos do perfil actual
+            frmAux.encherDatos(perfilActual);
+
+            frmAux.ShowDialog();
+
+            if (frmAux.DialogResult == DialogResult.OK)
+            {
+                perfilActual = frmAux.perfilNovo;
+            }
+
+        }
+
+
+        /****************************************************************************************************************************
+         * Elimina o perfil activo
+         ****************************************************************************************************************************/
+        private void tsBtnEliminar_Click(object sender, EventArgs e)
+        {
+
+        }
+
+
+        /****************************************************************************************************************************
+         * Abre un dialogo para cambiar o directorio onde se almacenarán os perfiles
+         ****************************************************************************************************************************/
+        private void tsBtnDirPerfiles_Click(object sender, EventArgs e)
+        {
+
         }
 
         /****************************************************************************************************************************

@@ -41,7 +41,7 @@
             this.menuPechar = new System.Windows.Forms.ToolStripMenuItem();
             this.cmboxPerfiles = new System.Windows.Forms.ComboBox();
             this.chbSeleccionado = new System.Windows.Forms.CheckBox();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.tsPrincipal = new System.Windows.Forms.ToolStrip();
             this.tsBtnEngadir = new System.Windows.Forms.ToolStripButton();
             this.tsBtnModificar = new System.Windows.Forms.ToolStripButton();
             this.tsBtnEliminar = new System.Windows.Forms.ToolStripButton();
@@ -52,7 +52,7 @@
             this.menuPrincipalIconizado = new System.Windows.Forms.ToolStripMenuItem();
             this.menuPrincipalInicioWindows = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuIconaNotificacion.SuspendLayout();
-            this.toolStrip1.SuspendLayout();
+            this.tsPrincipal.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnOnOff
@@ -143,9 +143,9 @@
             this.chbSeleccionado.Text = "Selecionar por defecto";
             this.chbSeleccionado.UseVisualStyleBackColor = true;
             // 
-            // toolStrip1
+            // tsPrincipal
             // 
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsPrincipal.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsBtnEngadir,
             this.tsBtnModificar,
             this.tsBtnEliminar,
@@ -153,11 +153,11 @@
             this.tsBtnDirPerfiles,
             this.toolStripSeparator4,
             this.tsBtnOpcions});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(357, 25);
-            this.toolStrip1.TabIndex = 20;
-            this.toolStrip1.Text = "toolStrip1";
+            this.tsPrincipal.Location = new System.Drawing.Point(0, 0);
+            this.tsPrincipal.Name = "tsPrincipal";
+            this.tsPrincipal.Size = new System.Drawing.Size(357, 25);
+            this.tsPrincipal.TabIndex = 20;
+            this.tsPrincipal.Text = "toolStrip1";
             // 
             // tsBtnEngadir
             // 
@@ -167,6 +167,7 @@
             this.tsBtnEngadir.Name = "tsBtnEngadir";
             this.tsBtnEngadir.Size = new System.Drawing.Size(23, 22);
             this.tsBtnEngadir.Text = "toolStripButton1";
+            this.tsBtnEngadir.Click += new System.EventHandler(this.tsBtnEngadir_Click);
             // 
             // tsBtnModificar
             // 
@@ -176,6 +177,7 @@
             this.tsBtnModificar.Name = "tsBtnModificar";
             this.tsBtnModificar.Size = new System.Drawing.Size(23, 22);
             this.tsBtnModificar.Text = "toolStripButton3";
+            this.tsBtnModificar.Click += new System.EventHandler(this.tsBtnModificar_Click);
             // 
             // tsBtnEliminar
             // 
@@ -185,6 +187,7 @@
             this.tsBtnEliminar.Name = "tsBtnEliminar";
             this.tsBtnEliminar.Size = new System.Drawing.Size(23, 22);
             this.tsBtnEliminar.Text = "toolStripButton5";
+            this.tsBtnEliminar.Click += new System.EventHandler(this.tsBtnEliminar_Click);
             // 
             // toolStripSeparator3
             // 
@@ -199,6 +202,7 @@
             this.tsBtnDirPerfiles.Name = "tsBtnDirPerfiles";
             this.tsBtnDirPerfiles.Size = new System.Drawing.Size(23, 22);
             this.tsBtnDirPerfiles.Text = "toolStripButton2";
+            this.tsBtnDirPerfiles.Click += new System.EventHandler(this.tsBtnDirPerfiles_Click);
             // 
             // toolStripSeparator4
             // 
@@ -237,7 +241,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(357, 150);
-            this.Controls.Add(this.toolStrip1);
+            this.Controls.Add(this.tsPrincipal);
             this.Controls.Add(this.chbSeleccionado);
             this.Controls.Add(this.cmboxPerfiles);
             this.Controls.Add(this.lblPerfil);
@@ -252,8 +256,8 @@
             this.Shown += new System.EventHandler(this.FRMPrincipal_Shown);
             this.Resize += new System.EventHandler(this.FRMPrincipal_Resize);
             this.MenuIconaNotificacion.ResumeLayout(false);
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
+            this.tsPrincipal.ResumeLayout(false);
+            this.tsPrincipal.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -272,7 +276,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ComboBox cmboxPerfiles;
         private System.Windows.Forms.CheckBox chbSeleccionado;
-        private System.Windows.Forms.ToolStrip toolStrip1;
+        private System.Windows.Forms.ToolStrip tsPrincipal;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripDropDownButton tsBtnOpcions;

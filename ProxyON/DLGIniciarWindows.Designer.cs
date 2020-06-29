@@ -1,6 +1,6 @@
 ﻿namespace ProxyON
 {
-    partial class FRMInicarWindows
+    partial class DLGIniciarWindows
     {
         /// <summary>
         /// Required designer variable.
@@ -66,6 +66,7 @@
             // 
             // btnCancelar
             // 
+            this.btnCancelar.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancelar.Location = new System.Drawing.Point(288, 73);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(127, 30);
@@ -78,12 +79,13 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.btnCancelar;
             this.ClientSize = new System.Drawing.Size(424, 110);
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.btnSistema);
             this.Controls.Add(this.btnUsuario);
             this.Controls.Add(this.lblInfo);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "FRMInicarWindows";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Inicar con Windows";

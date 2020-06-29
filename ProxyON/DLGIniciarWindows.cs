@@ -3,9 +3,9 @@ using System.Windows.Forms;
 
 namespace ProxyON
 {
-    public partial class FRMInicarWindows : Form
+    public partial class DLGIniciarWindows : Form
     {
-        public FRMInicarWindows()
+        public DLGIniciarWindows()
         {
             InitializeComponent();
         }

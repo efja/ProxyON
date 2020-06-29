@@ -38,7 +38,7 @@
             this.tbServidor = new System.Windows.Forms.TextBox();
             this.btnCancelar = new System.Windows.Forms.Button();
             this.lblNome = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.tbNome = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // btnGardar
@@ -49,6 +49,7 @@
             this.btnGardar.TabIndex = 5;
             this.btnGardar.Text = "GARDAR DATOS";
             this.btnGardar.UseVisualStyleBackColor = true;
+            this.btnGardar.Click += new System.EventHandler(this.btnGardar_Click);
             // 
             // chbDireccionsLocais
             // 
@@ -117,6 +118,7 @@
             this.btnCancelar.TabIndex = 6;
             this.btnCancelar.Text = "CANCELAR";
             this.btnCancelar.UseVisualStyleBackColor = true;
+            this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
             // 
             // lblNome
             // 
@@ -127,20 +129,22 @@
             this.lblNome.TabIndex = 21;
             this.lblNome.Text = "Nome:";
             // 
-            // textBox1
+            // tbNome
             // 
-            this.textBox1.Location = new System.Drawing.Point(70, 15);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(306, 20);
-            this.textBox1.TabIndex = 1;
+            this.tbNome.Location = new System.Drawing.Point(70, 15);
+            this.tbNome.Name = "tbNome";
+            this.tbNome.Size = new System.Drawing.Size(306, 20);
+            this.tbNome.TabIndex = 1;
             // 
             // DLGPerfil
             // 
+            this.AcceptButton = this.btnGardar;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.btnCancelar;
             this.ClientSize = new System.Drawing.Size(389, 231);
             this.Controls.Add(this.lblNome);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.tbNome);
             this.Controls.Add(this.btnGardar);
             this.Controls.Add(this.chbDireccionsLocais);
             this.Controls.Add(this.lblExcepcions);
@@ -150,7 +154,10 @@
             this.Controls.Add(this.tbPorto);
             this.Controls.Add(this.tbServidor);
             this.Controls.Add(this.btnCancelar);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.MaximizeBox = false;
             this.Name = "DLGPerfil";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Perfil";
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -169,6 +176,6 @@
         private System.Windows.Forms.TextBox tbServidor;
         private System.Windows.Forms.Button btnCancelar;
         private System.Windows.Forms.Label lblNome;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox tbNome;
     }
 }
