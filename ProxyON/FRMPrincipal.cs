@@ -9,6 +9,7 @@ using System.Security.Permissions;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace ProxyON
 {
@@ -31,29 +32,35 @@ namespace ProxyON
         static bool settingsReturn, refreshReturn;
 
         // Valores da configuración para o inicio con Windows
-        string inicioWindows = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";
-        string inicioWindowsClave = "ProxyON";
+        private string inicioWindows = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";
+        private string inicioWindowsClave = "ProxyON";
 
         // Valores da configuración do PROXY
-        string configuracionInternet = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Internet Settings";
-        string proxyEnableClave = "ProxyEnable";
-        int proxyEnableValorON = 1;
-        int proxyEnableValorOFF = 0;
+        private string configuracionInternet = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Internet Settings";
+        private string proxyEnableClave = "ProxyEnable";
+        private int proxyEnableValorON = 1;
+        private int proxyEnableValorOFF = 0;
 
         // Claves para a configuración do PROXY
-        string proxyServerClave = "ProxyServer";
-        string proxyOverrideClave = "ProxyOverride";
+        private string proxyServerClave = "ProxyServer";
+        private string proxyOverrideClave = "ProxyOverride";
 
         /****************************************************************************************************************************
          * Configuración pr defecto
          ****************************************************************************************************************************/
-        bool arrancarIconizado = false;
-        string perfiles = "Perfiles";
+        private bool arrancarIconizado = false;
+        private string perfiles;
+        private Dictionary<string, Perfil> listadoPerfiles = new Dictionary<string, Perfil>();
 
-        string servidorActual = "127.0.0.1";
-        string portoActual = "80";
-        string excepcionsActual = "";
-        bool direccionsLocaisActual = false;
+        /*
+        private string servidorActual;
+        private string portoActual;
+        private string excepcionsActual;
+        private bool direccionsLocaisActual;
+        */
+
+        private Operacions operacions;
+        private Perfil perfilActual;
         #endregion
 
         #region EVENTOS FORMULARIO
@@ -78,6 +85,31 @@ namespace ProxyON
         {
             estadoProxy();
             cargarOpcions();
+            operacions = new Operacions(perfiles);
+
+            operacions.cargarListaPerfiles();
+
+            try
+            {
+                foreach (Perfil perfil in operacions.getListaPerfiles())
+                {
+                    listadoPerfiles.Add(perfil.nome, perfil);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+            if (listadoPerfiles.Count > 0)
+            {
+                cmboxPerfiles.DataSource = new BindingSource(listadoPerfiles, null);
+
+                cmboxPerfiles.ValueMember = "Value";
+                cmboxPerfiles.DisplayMember = "Key";
+                cmboxPerfiles.SelectedIndex = 0;
+            }
         }
 
         /****************************************************************************************************************************
@@ -121,6 +153,7 @@ namespace ProxyON
                 arrancarIconizado = Convert.ToBoolean(ConfigurationManager.AppSettings.Get("iconizado"));
                 perfiles = ConfigurationManager.AppSettings.Get("perfiles");
 
+                /*
                 servidorActual = ConfigurationManager.AppSettings.Get("servidor");
                 portoActual = ConfigurationManager.AppSettings.Get("porto");
                 excepcionsActual = ConfigurationManager.AppSettings.Get("excepcions");
@@ -137,8 +170,10 @@ namespace ProxyON
                 menuPrincipalIconizado.Checked = arrancarIconizado;
                 comprobarIniciarWin();
             }
-            catch
-            { }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         /****************************************************************************************************************************
@@ -162,6 +197,17 @@ namespace ProxyON
                 MessageBox.Show("Non se atopou o ficheiro de configuración", "Erro ó gardar a configuración");
             }
         }
+
+        private void cmboxPerfiles_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                perfilActual = (Perfil)cmboxPerfiles.SelectedValue;
+            }
+            catch
+            { }
+        }
+
         #endregion
 
         #region LÓXICA
@@ -191,8 +237,10 @@ namespace ProxyON
                     this.Close();
                     Process.Start(processInfo);
                 }
-                catch
-                { }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
 
             }
         }
@@ -228,8 +276,10 @@ namespace ProxyON
 
                 registry.Close();
             }
-            catch
-            { }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
 
             // Establece o valor do estado do menú
             menuPrincipalInicioWindows.Checked = (arrancarWindows > 0) ? true : false;
@@ -283,9 +333,9 @@ namespace ProxyON
                     inicio.Close();
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                MessageBox.Show(e.Message);
+                MessageBox.Show(ex.Message);
             }
 
             comprobarIniciarWin();
@@ -330,8 +380,10 @@ namespace ProxyON
 
                 registry.Close();
             }
-            catch
-            { }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
 
             return status;
         }
@@ -344,17 +396,17 @@ namespace ProxyON
             string proxyServerValor = "";
             string proxyOverrideValor = "";
 
-            if (!servidorActual.Equals("") && !portoActual.Equals(""))
+            if (!perfilActual.servidor.Equals("") && !perfilActual.porto.Equals(""))
             {
-                proxyServerValor = servidorActual + ":" + portoActual;
+                proxyServerValor = perfilActual.servidor + ":" + perfilActual.porto;
             }
 
-            if (!excepcionsActual.Equals(""))
+            if (!perfilActual.excepcions.Equals(""))
             {
-                proxyOverrideValor = excepcionsActual;
+                proxyOverrideValor = perfilActual.excepcions;
             }
 
-            if (direccionsLocaisActual)
+            if (perfilActual.direccionsLocais)
             {
                 string pecharExcepcions = "";
                 if (proxyOverrideValor.Length > 0)
@@ -390,8 +442,10 @@ namespace ProxyON
 
                 proxy.Close();
             }
-            catch
-            { }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
         #endregion
 

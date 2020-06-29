@@ -44,7 +44,7 @@
             this.menuPrincipalIconizado = new System.Windows.Forms.ToolStripMenuItem();
             this.menuPrincipalInicioWindows = new System.Windows.Forms.ToolStripMenuItem();
             this.menuPrincipalPechar = new System.Windows.Forms.ToolStripMenuItem();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.cmboxPerfiles = new System.Windows.Forms.ComboBox();
             this.btnEngadirPerfil = new System.Windows.Forms.Button();
             this.btnBorrarPerfil = new System.Windows.Forms.Button();
             this.chbSeleccionado = new System.Windows.Forms.CheckBox();
@@ -164,13 +164,14 @@
             this.menuPrincipalPechar.Text = "Pechar";
             this.menuPrincipalPechar.Click += new System.EventHandler(this.pecharToolStripMenuItem_Click);
             // 
-            // comboBox1
+            // cmboxPerfiles
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(52, 33);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(251, 21);
-            this.comboBox1.TabIndex = 12;
+            this.cmboxPerfiles.FormattingEnabled = true;
+            this.cmboxPerfiles.Location = new System.Drawing.Point(52, 33);
+            this.cmboxPerfiles.Name = "cmboxPerfiles";
+            this.cmboxPerfiles.Size = new System.Drawing.Size(251, 21);
+            this.cmboxPerfiles.TabIndex = 12;
+            this.cmboxPerfiles.SelectedIndexChanged += new System.EventHandler(this.cmboxPerfiles_SelectedIndexChanged);
             // 
             // btnEngadirPerfil
             // 
@@ -208,7 +209,7 @@
             this.Controls.Add(this.chbSeleccionado);
             this.Controls.Add(this.btnBorrarPerfil);
             this.Controls.Add(this.btnEngadirPerfil);
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.cmboxPerfiles);
             this.Controls.Add(this.menuPrincipal);
             this.Controls.Add(this.lblPerfil);
             this.Controls.Add(this.btnOnOff);
@@ -246,7 +247,7 @@
         private System.Windows.Forms.ToolStripMenuItem menuPrincipalPechar;
         private System.Windows.Forms.ToolStripMenuItem menuPrincipalIconizado;
         private System.Windows.Forms.ToolStripMenuItem menuPrincipalInicioWindows;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox cmboxPerfiles;
         private System.Windows.Forms.Button btnEngadirPerfil;
         private System.Windows.Forms.Button btnBorrarPerfil;
         private System.Windows.Forms.CheckBox chbSeleccionado;

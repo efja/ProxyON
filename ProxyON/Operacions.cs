@@ -9,6 +9,7 @@ using System.Configuration;
 using System.IO;
 using System.Windows.Forms;
 using System.Xml;
+using System.Xml.Serialization;
 
 namespace ProxyON
 {
@@ -74,23 +75,23 @@ namespace ProxyON
         /****************************************************************************************************************************
          * Carga un perfil dende un ficheiro dado
          ****************************************************************************************************************************/
-        private Perfil cargarPerfilDefecto()
+        public Perfil cargarPerfilDefecto()
         {
             Perfil resultado = null;
 
             try
             {
                 resultado = new Perfil(
-                    ConfigurationManager.AppSettings.Get("Por defecto"),
+                    ConfigurationManager.AppSettings.Get("nome"),
                     ConfigurationManager.AppSettings.Get("servidor"),
                     ConfigurationManager.AppSettings.Get("porto"),
                     ConfigurationManager.AppSettings.Get("excepcions"),
                     Convert.ToBoolean(ConfigurationManager.AppSettings.Get("direccionsLocais"))
                 );
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Erro ó cargar o perfil por defecto", "Erro ó cargar o perfil");
+                MessageBox.Show("Erro ó cargar o perfil por defecto\n" + ex.Message, "Erro ó cargar o perfil");
             }
 
             return resultado;
@@ -100,7 +101,7 @@ namespace ProxyON
         /****************************************************************************************************************************
          * Carga un perfil dende un ficheiro dado
          ****************************************************************************************************************************/
-        private Perfil cargarPerfil(string rutaPerfil)
+        public Perfil cargarPerfil(string rutaPerfil)
         {
             Perfil resultado = null;
 
@@ -108,23 +109,16 @@ namespace ProxyON
             {
                 if (File.Exists(rutaPerfil))
                 {
-                    XmlDocument documento = new XmlDocument();
-                    documento.Load(rutaPerfil);
-
-                    XmlNodeList xPerfil = documento.GetElementsByTagName("perfil");
-
-                    resultado = new Perfil(
-                        documento.GetElementById("nome").InnerText,
-                        documento.GetElementById("servidor").InnerText,
-                        documento.GetElementById("porto").InnerText,
-                        documento.GetElementById("excepcions").InnerText,
-                        Convert.ToBoolean(documento.GetElementById("direccionsLocais").InnerText)
-                    );
+                    XmlSerializer serializer = new XmlSerializer(typeof(Perfil), new XmlRootAttribute("perfil"));
+                    using (FileStream fileStream = new FileStream(rutaPerfil, FileMode.Open))
+                    {
+                        resultado = (Perfil)serializer.Deserialize(fileStream);
+                    }
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Erro ó cargar o perfil: <" + rutaPerfil + ">", "Erro ó cargar o perfil");
+                MessageBox.Show("Erro ó cargar o perfil: <" + rutaPerfil + ">\n" + ex.Message, "Erro ó cargar o perfil");
             }
 
             return resultado;
@@ -133,7 +127,7 @@ namespace ProxyON
         /****************************************************************************************************************************
          * Carga os perfiles
          ****************************************************************************************************************************/
-        private void cargarListaPerfiles()
+        public void cargarListaPerfiles()
         {
             if (Directory.Exists(this.dirPerfiles))
             {
@@ -141,7 +135,7 @@ namespace ProxyON
 
                 foreach (var fPerfil in directorio.GetFiles("*.xml"))
                 {
-                    this.listaPerfiles.Add(cargarPerfil(fPerfil.Name));
+                    this.listaPerfiles.Add(cargarPerfil(fPerfil.FullName));
                 }
             }
             else
@@ -153,43 +147,31 @@ namespace ProxyON
         /****************************************************************************************************************************
          * Garda (sobrescribindo) a información do perfil pasado no ficheiro dados
          ****************************************************************************************************************************/
-        private void gardarPerfil(string rutaPerfil, Perfil perfilGardar)
+        public void gardarPerfil(string rutaPerfil, Perfil perfilGardar)
         {
             try
             {
-                XmlTextWriter ficheiroXML;
-                ficheiroXML = new XmlTextWriter(rutaPerfil, Encoding.UTF8);
-                ficheiroXML.Formatting = Formatting.Indented;
-                ficheiroXML.WriteStartDocument();
+                XmlSerializer serializer = new XmlSerializer(typeof(Perfil));
+                Stream fs = new FileStream(rutaPerfil, FileMode.Create);
+                XmlWriter writer = new XmlTextWriter(fs, Encoding.UTF8);
 
-                ficheiroXML.WriteStartElement("perfil");
-
-                ficheiroXML.WriteElementString("nome", perfilGardar.getNome());
-                ficheiroXML.WriteElementString("servidor", perfilGardar.getServidor());
-                ficheiroXML.WriteElementString("porto", perfilGardar.getPorto());
-                ficheiroXML.WriteElementString("excepcions", perfilGardar.getExcepcions());
-                ficheiroXML.WriteElementString("direccionsLocais", (perfilGardar.getDireccionsLocais()) ? "true" : "false");
-
-                ficheiroXML.WriteEndElement();
-
-                ficheiroXML.WriteEndDocument();
-                ficheiroXML.Flush();
-                ficheiroXML.Close();
+                serializer.Serialize(writer, perfilGardar);
+                writer.Close();
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Erro ó gardar o perfil: <" + rutaPerfil + ">", "Erro ó gardar o perfil");
+                MessageBox.Show("Erro ó gardar o perfil: <" + rutaPerfil + ">\n" + ex.Message, "Erro ó gardar o perfil");
             }
         }
 
         /****************************************************************************************************************************
          * Garda a información dos perfiles no directorio de perfiles
          ****************************************************************************************************************************/
-        private void gardarPerfiles()
+        public void gardarPerfiles()
         {
             foreach (Perfil perfil in this.listaPerfiles)
             {
-                gardarPerfil(this.dirPerfiles + "\\" + perfil.getNome() + ".xml", perfil);
+                gardarPerfil(this.dirPerfiles + "\\" + perfil.nome + ".xml", perfil);
             }
         }
         #endregion
