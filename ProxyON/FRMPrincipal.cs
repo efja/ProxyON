@@ -50,7 +50,7 @@ namespace ProxyON
         private bool arrancarIconizado = false;
 
         private Operacions operacions;
-        private string directorioPerfiles;
+        private string @directorioPerfiles;
 
         private Dictionary<string, Perfil> listadoPerfiles = new Dictionary<string, Perfil>();
         private int perfilActual = 0;
@@ -78,7 +78,7 @@ namespace ProxyON
         {
             estadoProxy();
             cargarOpcions();
-            operacions = new Operacions(directorioPerfiles);
+            operacions = new Operacions(@directorioPerfiles);
 
             cargarComboBoxPerfiles();
         }
@@ -122,7 +122,7 @@ namespace ProxyON
             {
                 // Carga a información do ficheiro de configuración
                 arrancarIconizado = Convert.ToBoolean(ConfigurationManager.AppSettings.Get("iconizado"));
-                directorioPerfiles = ConfigurationManager.AppSettings.Get("perfiles");
+                @directorioPerfiles = ConfigurationManager.AppSettings.Get("perfiles");
 
                 // Mostra a información no menú
                 menuPrincipalIconizado.Checked = arrancarIconizado;
@@ -531,15 +531,18 @@ namespace ProxyON
                     {
                         foreach (Perfil perfil in operacions.listaPerfiles)
                         {
-                            if (perfil.Equals(frmAux.perfilNovo) && operacions.comprobarDirectorio(directorioPerfiles))
+                            if (operacions.comprobarPerfil(@directorioPerfiles, frmAux.perfilNovo.nome))
                             {
                                 MessageBox.Show("Non se pode gardar 2 perfiles co mesmo <Nome>", "Perfil duplicado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                                // Volvese a lanzar o formulario
+                                perfilEngadirModificarCopiar(sender, e);
                                 return;
                             }
                         }
                     }
 
-                    operacions.gardarPerfil(directorioPerfiles, frmAux.perfilNovo);
+                    operacions.gardarPerfil(@directorioPerfiles, frmAux.perfilNovo);
                     cargarComboBoxPerfiles();
                 }
             }
@@ -564,7 +567,7 @@ namespace ProxyON
                 );
                 if (dialogResult == DialogResult.Yes)
                 {
-                    operacions.borrarPerfil(directorioPerfiles, operacions.listaPerfiles[perfilActual]);
+                    operacions.borrarPerfil(@directorioPerfiles, operacions.listaPerfiles[perfilActual]);
                     operacions.listaPerfiles.RemoveAt(perfilActual);
                     cargarComboBoxPerfiles();
                 }
@@ -581,6 +584,36 @@ namespace ProxyON
          ****************************************************************************************************************************/
         private void tsBtnDirPerfiles_Click(object sender, EventArgs e)
         {
+            string rutaPrevia = Path.GetFullPath(operacions.comprobarDirectorio(@directorioPerfiles) ? @directorioPerfiles : ".");
+
+            folderBrowserDialog1.Description = "Escolle a ubicación onde queres gardar os Perfiles dos teus PROXYs";
+            folderBrowserDialog1.SelectedPath = rutaPrevia;
+
+            if(folderBrowserDialog1.ShowDialog() == DialogResult.OK)
+            {
+                if (!rutaPrevia.Equals(folderBrowserDialog1.SelectedPath))
+                {
+                    directorioPerfiles = folderBrowserDialog1.SelectedPath;
+
+                    Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                    config.AppSettings.Settings["perfiles"].Value = @directorioPerfiles;
+                    config.Save(ConfigurationSaveMode.Modified);
+
+                    operacions.dirPerfiles = directorioPerfiles;
+
+                    DialogResult moverPerfiles = MessageBox.Show("Queres intentar mover os perfiles que teñas gardados á nova ubicación?\n\nNOTA: Esta operación implica borrar os perfiles da ubicación actual",
+                        "Mover Perfiles",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Information
+                    );
+
+                    if (moverPerfiles == DialogResult.Yes)
+                    {
+                        operacions.gardarPerfiles();
+                        operacions.borrarPerfiles(rutaPrevia);
+                    }
+                }
+            }
 
         }
 

@@ -44,6 +44,7 @@
             this.tsPrincipal = new System.Windows.Forms.ToolStrip();
             this.tsBtnEngadir = new System.Windows.Forms.ToolStripButton();
             this.tsBtnModificar = new System.Windows.Forms.ToolStripButton();
+            this.tsBtnCopiar = new System.Windows.Forms.ToolStripButton();
             this.tsBtnEliminar = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.tsBtnDirPerfiles = new System.Windows.Forms.ToolStripButton();
@@ -51,7 +52,7 @@
             this.tsBtnOpcions = new System.Windows.Forms.ToolStripDropDownButton();
             this.menuPrincipalIconizado = new System.Windows.Forms.ToolStripMenuItem();
             this.menuPrincipalInicioWindows = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsBtnCopiar = new System.Windows.Forms.ToolStripButton();
+            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.MenuIconaNotificacion.SuspendLayout();
             this.tsPrincipal.SuspendLayout();
             this.SuspendLayout();
@@ -181,6 +182,16 @@
             this.tsBtnModificar.Text = "toolStripButton3";
             this.tsBtnModificar.Click += new System.EventHandler(this.perfilEngadirModificarCopiar);
             // 
+            // tsBtnCopiar
+            // 
+            this.tsBtnCopiar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsBtnCopiar.Image = ((System.Drawing.Image)(resources.GetObject("tsBtnCopiar.Image")));
+            this.tsBtnCopiar.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsBtnCopiar.Name = "tsBtnCopiar";
+            this.tsBtnCopiar.Size = new System.Drawing.Size(23, 22);
+            this.tsBtnCopiar.Text = "toolStripButton1";
+            this.tsBtnCopiar.Click += new System.EventHandler(this.perfilEngadirModificarCopiar);
+            // 
             // tsBtnEliminar
             // 
             this.tsBtnEliminar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -238,16 +249,6 @@
             this.menuPrincipalInicioWindows.Text = "Iniciar con Windows";
             this.menuPrincipalInicioWindows.Click += new System.EventHandler(this.menuPrincipalInicioWindows_Click);
             // 
-            // tsBtnCopiar
-            // 
-            this.tsBtnCopiar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsBtnCopiar.Image = ((System.Drawing.Image)(resources.GetObject("tsBtnCopiar.Image")));
-            this.tsBtnCopiar.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsBtnCopiar.Name = "tsBtnCopiar";
-            this.tsBtnCopiar.Size = new System.Drawing.Size(23, 22);
-            this.tsBtnCopiar.Text = "toolStripButton1";
-            this.tsBtnCopiar.Click += new System.EventHandler(this.perfilEngadirModificarCopiar);
-            // 
             // FRMPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -299,6 +300,7 @@
         private System.Windows.Forms.ToolStripButton tsBtnEliminar;
         private System.Windows.Forms.ToolStripButton tsBtnDirPerfiles;
         private System.Windows.Forms.ToolStripButton tsBtnCopiar;
+        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
     }
 }
 

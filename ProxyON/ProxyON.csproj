@@ -113,6 +113,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="NotifyIcon.ico" />
+    <Content Include="Resources\netshell-#1603.ico" />
+    <Content Include="Resources\open-folder2.png" />
+    <Content Include="Resources\pencil2.png" />
+    <Content Include="Resources\power-button-off2.png" />
+    <Content Include="Resources\settings2.png" />
+    <Content Include="Resources\shell32-#148.ico" />
+    <Content Include="Resources\wmploc-#474.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
