@@ -153,19 +153,6 @@ namespace ProxyON
                 arrancarIconizado = Convert.ToBoolean(ConfigurationManager.AppSettings.Get("iconizado"));
                 perfiles = ConfigurationManager.AppSettings.Get("perfiles");
 
-                /*
-                servidorActual = ConfigurationManager.AppSettings.Get("servidor");
-                portoActual = ConfigurationManager.AppSettings.Get("porto");
-                excepcionsActual = ConfigurationManager.AppSettings.Get("excepcions");
-                direccionsLocaisActual = Convert.ToBoolean(ConfigurationManager.AppSettings.Get("direccionsLocais"));
-
-                // Asigna os datos ó formulario
-                /*
-                tbServidor.Text = servidorActual;
-                tbPorto.Text = portoActual;
-                tbExcepcions.Text = excepcionsActual;
-                chbDireccionsLocais.Checked = direccionsLocaisActual;
-                */
                 // Mostra a información no menú
                 menuPrincipalIconizado.Checked = arrancarIconizado;
                 comprobarIniciarWin();
@@ -506,13 +493,6 @@ namespace ProxyON
             iniciarWindows();
         }
 
-        /****************************************************************************************************************************
-         * Sae da aplicación
-         ****************************************************************************************************************************/
-        private void pecharToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.Dispose();
-        }
         #endregion
 
         #region ÁREA DE NOTIFICACIÓN
