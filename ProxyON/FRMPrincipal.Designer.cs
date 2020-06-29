@@ -144,6 +144,7 @@
             this.chbSeleccionado.TabIndex = 19;
             this.chbSeleccionado.Text = "Selecionar por defecto";
             this.chbSeleccionado.UseVisualStyleBackColor = true;
+            this.chbSeleccionado.Click += new System.EventHandler(this.chbSeleccionado_Click);
             // 
             // tsPrincipal
             // 

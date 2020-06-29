@@ -50,9 +50,10 @@ namespace ProxyON
         private bool arrancarIconizado = false;
 
         private Operacions operacions;
-        private string @directorioPerfiles;
+        private string directorioPerfiles;
+        private string perfilPorDefecto;
 
-        private Dictionary<string, Perfil> listadoPerfiles = new Dictionary<string, Perfil>();
+        private List<string> listadoPerfiles = new List<string>();
         private int perfilActual = 0;
         #endregion
 
@@ -122,11 +123,13 @@ namespace ProxyON
             {
                 // Carga a información do ficheiro de configuración
                 arrancarIconizado = Convert.ToBoolean(ConfigurationManager.AppSettings.Get("iconizado"));
-                @directorioPerfiles = ConfigurationManager.AppSettings.Get("perfiles");
+                directorioPerfiles = ConfigurationManager.AppSettings.Get("perfiles");
+                perfilPorDefecto = ConfigurationManager.AppSettings.Get("perfilPorDefecto");
 
-                // Mostra a información no menú
+                // Actualiza a información do formulario
                 menuPrincipalIconizado.Checked = arrancarIconizado;
                 comprobarIniciarWin();
+                comprobarPorDefecto();
             }
             catch (Exception ex)
             {
@@ -149,7 +152,7 @@ namespace ProxyON
             {
                 foreach (Perfil perfil in operacions.listaPerfiles)
                 {
-                    listadoPerfiles.Add(perfil.nome, perfil);
+                    listadoPerfiles.Add(perfil.nome);
                 }
 
             }
@@ -160,26 +163,23 @@ namespace ProxyON
 
             if (listadoPerfiles.Count > 0)
             {
-                cmboxPerfiles.DataSource = new BindingSource(listadoPerfiles, null);
+                cmboxPerfiles.Items.AddRange(listadoPerfiles.ToArray());
 
-                cmboxPerfiles.ValueMember = "Value";
-                cmboxPerfiles.DisplayMember = "Key";
-                cmboxPerfiles.SelectedIndex = 0;
-            }
-        }
-
-        /****************************************************************************************************************************
-         * Garda a información do ficheiro de configuración nos cadros de texto
-         ****************************************************************************************************************************/
-        private void gardarOpcions()
-        {
-            try
-            {
-
-            }
-            catch
-            {
-                MessageBox.Show("Non se atopou o ficheiro de configuración", "Erro ó gardar a configuración");
+                if (cmboxPerfiles.Items.Count > 0)
+                {
+                    if (perfilPorDefecto.Equals(""))
+                    {
+                        cmboxPerfiles.SelectedIndex = 0;
+                    }
+                    else
+                    {
+                        cmboxPerfiles.SelectedItem = perfilPorDefecto;
+                    }
+                }
+                else
+                {
+                    cmboxPerfiles.SelectedIndex = -1;
+                }
             }
         }
 
@@ -188,6 +188,7 @@ namespace ProxyON
             try
             {
                 perfilActual = cmboxPerfiles.SelectedIndex;
+                comprobarPorDefecto();
             }
             catch
             { }
@@ -201,6 +202,29 @@ namespace ProxyON
          * #  Inicio da lóxica do programa
          * #
          * ########################################################################################################################## */
+
+        /****************************************************************************************************************************
+         * Comproba se o perfil actual é o perfil por defecto para marcar ou desmarcar o checkbox
+         ****************************************************************************************************************************/
+        private void comprobarPorDefecto()
+        {
+            bool valor = false;
+
+            try
+            {
+                if (!perfilPorDefecto.Equals("") && operacions != null && operacions.listaPerfiles != null)
+                {
+                    if (perfilPorDefecto.Equals(operacions.listaPerfiles[perfilActual].nome))
+                    {
+                        valor = true;
+                    }
+                }
+            }
+            catch
+            { }
+
+            chbSeleccionado.Checked = valor;
+        }
 
         /****************************************************************************************************************************
          * Cambia a execución do programa a administrador
@@ -340,8 +364,6 @@ namespace ProxyON
             Color corActivarProxy = Color.Maroon;
             Color corDesactivarProxy = Color.Green;
 
-            // mentres non se implemente a funcionalidade queda desactivado sempre
-            chbSeleccionado.Enabled = false;
             try
             {
                 RegistryKey registry = Registry.CurrentUser.OpenSubKey(configuracionInternet, true);
@@ -358,7 +380,7 @@ namespace ProxyON
 
                     activarTSPrincipal(true);
                     cmboxPerfiles.Enabled = true;
-                    // chbSeleccionado.Enabled = true; // mentres non se implemente a funcionalidade queda desactivado sempre
+                    chbSeleccionado.Enabled = true;
                 }
                 else
                 {
@@ -448,7 +470,7 @@ namespace ProxyON
         #region BOTÓNS
         /* ##########################################################################################################################
          * #
-         * #  Eventos de botóns
+         * #  Eventos de botóns e checkboxes
          * #
          * ########################################################################################################################## */
 
@@ -459,6 +481,24 @@ namespace ProxyON
         {
             cambiarProxy();
             estadoProxy();
+        }
+
+        /****************************************************************************************************************************
+         * Garda a información do ficheiro de configuración nos cadros de texto
+         ****************************************************************************************************************************/
+        private void chbSeleccionado_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                perfilPorDefecto = (chbSeleccionado.Checked) ? operacions.listaPerfiles[perfilActual].nome : "";
+                Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                config.AppSettings.Settings["perfilPorDefecto"].Value = perfilPorDefecto;
+                config.Save(ConfigurationSaveMode.Modified);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Non se atopou o ficheiro de configuración\n" + ex.Message, "Erro ó gardar a configuración");
+            }
         }
         #endregion
 
