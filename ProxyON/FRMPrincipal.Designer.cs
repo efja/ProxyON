@@ -167,7 +167,7 @@
             this.tsBtnEngadir.Name = "tsBtnEngadir";
             this.tsBtnEngadir.Size = new System.Drawing.Size(23, 22);
             this.tsBtnEngadir.Text = "toolStripButton1";
-            this.tsBtnEngadir.Click += new System.EventHandler(this.tsBtnEngadir_Click);
+            this.tsBtnEngadir.Click += new System.EventHandler(this.engadirModificarPerfil);
             // 
             // tsBtnModificar
             // 
@@ -177,7 +177,7 @@
             this.tsBtnModificar.Name = "tsBtnModificar";
             this.tsBtnModificar.Size = new System.Drawing.Size(23, 22);
             this.tsBtnModificar.Text = "toolStripButton3";
-            this.tsBtnModificar.Click += new System.EventHandler(this.tsBtnModificar_Click);
+            this.tsBtnModificar.Click += new System.EventHandler(this.engadirModificarPerfil);
             // 
             // tsBtnEliminar
             // 

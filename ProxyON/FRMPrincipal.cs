@@ -81,27 +81,7 @@ namespace ProxyON
 
             operacions.cargarListaPerfiles();
 
-            try
-            {
-                foreach (Perfil perfil in operacions.listaPerfiles)
-                {
-                    listadoPerfiles.Add(perfil.nome, perfil);
-                }
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-
-            if (listadoPerfiles.Count > 0)
-            {
-                cmboxPerfiles.DataSource = new BindingSource(listadoPerfiles, null);
-
-                cmboxPerfiles.ValueMember = "Value";
-                cmboxPerfiles.DisplayMember = "Key";
-                cmboxPerfiles.SelectedIndex = 0;
-            }
+            cargarComboBoxPerfiles();
         }
 
         /****************************************************************************************************************************
@@ -152,6 +132,37 @@ namespace ProxyON
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+            }
+        }
+
+
+        /****************************************************************************************************************************
+         * Carga a información no ComboBox para seleccionar o Perfil a activar
+         ****************************************************************************************************************************/
+        private void cargarComboBoxPerfiles()
+        {
+            listadoPerfiles.Clear();
+
+            try
+            {
+                foreach (Perfil perfil in operacions.listaPerfiles)
+                {
+                    listadoPerfiles.Add(perfil.nome, perfil);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+            if (listadoPerfiles.Count > 0)
+            {
+                cmboxPerfiles.DataSource = new BindingSource(listadoPerfiles, null);
+
+                cmboxPerfiles.ValueMember = "Value";
+                cmboxPerfiles.DisplayMember = "Key";
+                cmboxPerfiles.SelectedIndex = 0;
             }
         }
 
@@ -477,41 +488,54 @@ namespace ProxyON
                 config.AppSettings.Settings["iconizado"].Value = (menuPrincipalIconizado.Checked) ? "true" : "false";
                 config.Save(ConfigurationSaveMode.Modified);
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Non se atopou o ficheiro de configuración", "Erro ó gardar a configuración");
+                MessageBox.Show("Non se atopou o ficheiro de configuración\n" + ex.Message, "Erro ó gardar a configuración");
             }
         }
 
         /****************************************************************************************************************************
-         * Abre un subformulario para engadir un novo perfil
+         * Abre un subformulario para engadir un novo perfil ou cos datos do perfil activo para modificalo segundo que botón o
+         * invoque
          ****************************************************************************************************************************/
-        private void tsBtnEngadir_Click(object sender, EventArgs e)
+        private void engadirModificarPerfil(object sender, EventArgs e)
         {
-            DLGPerfil frmAux = new DLGPerfil();
-            frmAux.ShowDialog();
-        }
-
-
-        /****************************************************************************************************************************
-         * Abre un subformulario cos datos do perfil activo para modificalo
-         ****************************************************************************************************************************/
-        private void tsBtnModificar_Click(object sender, EventArgs e)
-        {
-            DLGPerfil frmAux = new DLGPerfil();
-
-            // Carganse os datos do perfil actual
-            frmAux.encherDatos(operacions.listaPerfiles[perfilActual]);
-
-            frmAux.ShowDialog();
-
-            if (frmAux.DialogResult == DialogResult.OK)
+            try
             {
-                operacions.listaPerfiles[perfilActual] = frmAux.perfilNovo;
+                bool modificar = false;
+                DLGPerfil frmAux = new DLGPerfil();
+                ToolStripButton chamador = (ToolStripButton)sender;
+
+                if (chamador.Name.Equals("tsBtnModificar"))
+                {
+                    modificar = true;
+
+                    // Carganse os datos do perfil actual
+                    frmAux.encherDatos(operacions.listaPerfiles[perfilActual]);
+                }
+
+                frmAux.ShowDialog();
+
+                if (frmAux.DialogResult == DialogResult.OK)
+                {
+                    if (modificar)
+                    {
+                        operacions.listaPerfiles[perfilActual] = frmAux.perfilNovo;
+                    }
+                    else
+                    {
+                        operacions.listaPerfiles.Add(frmAux.perfilNovo);
+                    }
+
+                    operacions.gardarPerfil(directorioPerfiles, frmAux.perfilNovo);
+                    cargarComboBoxPerfiles();
+                }
             }
-
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + "\n\n" + sender.GetType());
+            }
         }
-
 
         /****************************************************************************************************************************
          * Elimina o perfil activo

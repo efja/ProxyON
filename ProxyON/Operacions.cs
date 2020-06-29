@@ -84,7 +84,7 @@ namespace ProxyON
             {
                 if (File.Exists(rutaPerfil))
                 {
-                    XmlSerializer serializer = new XmlSerializer(typeof(Perfil), new XmlRootAttribute("perfil"));
+                    XmlSerializer serializer = new XmlSerializer(typeof(Perfil), new XmlRootAttribute("Perfil"));
                     using (FileStream fileStream = new FileStream(rutaPerfil, FileMode.Open))
                     {
                         resultado = (Perfil)serializer.Deserialize(fileStream);
@@ -104,9 +104,10 @@ namespace ProxyON
          ****************************************************************************************************************************/
         public void cargarListaPerfiles()
         {
-            if (Directory.Exists(this.dirPerfiles))
+            DirectoryInfo directorio = new DirectoryInfo(this.dirPerfiles);
+
+            if (Directory.Exists(this.dirPerfiles) && directorio.GetFiles().Count() > 0)
             {
-                DirectoryInfo directorio = new DirectoryInfo(this.dirPerfiles);
 
                 foreach (var fPerfil in directorio.GetFiles("*.xml"))
                 {
@@ -126,8 +127,14 @@ namespace ProxyON
         {
             try
             {
+                // Crea o directorio se non existe
+                if (!Directory.Exists(rutaPerfil))
+                {
+                    Directory.CreateDirectory(rutaPerfil);
+                }
+
                 XmlSerializer serializer = new XmlSerializer(typeof(Perfil));
-                Stream fs = new FileStream(rutaPerfil, FileMode.Create);
+                Stream fs = new FileStream(rutaPerfil + "\\" + perfilGardar.nome + ".xml", FileMode.Create);
                 XmlWriter writer = new XmlTextWriter(fs, Encoding.UTF8);
 
                 serializer.Serialize(writer, perfilGardar);
@@ -146,7 +153,7 @@ namespace ProxyON
         {
             foreach (Perfil perfil in this.listaPerfiles)
             {
-                gardarPerfil(this.dirPerfiles + "\\" + perfil.nome + ".xml", perfil);
+                gardarPerfil(this.dirPerfiles, perfil);
             }
         }
         #endregion
