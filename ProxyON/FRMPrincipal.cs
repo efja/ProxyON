@@ -5,8 +5,6 @@ using Microsoft.Win32;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 
-using System.Security.Permissions;
-using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Diagnostics;
 using System.Collections.Generic;
@@ -54,7 +52,7 @@ namespace ProxyON
         private string directorioPerfiles;
 
         private Dictionary<string, Perfil> listadoPerfiles = new Dictionary<string, Perfil>();
-        private Perfil perfilActual;
+        private int perfilActual = 0;
         #endregion
 
         #region EVENTOS FORMULARIO
@@ -85,7 +83,7 @@ namespace ProxyON
 
             try
             {
-                foreach (Perfil perfil in operacions.getListaPerfiles())
+                foreach (Perfil perfil in operacions.listaPerfiles)
                 {
                     listadoPerfiles.Add(perfil.nome, perfil);
                 }
@@ -176,7 +174,7 @@ namespace ProxyON
         {
             try
             {
-                perfilActual = (Perfil)cmboxPerfiles.SelectedValue;
+                perfilActual = cmboxPerfiles.SelectedIndex;
             }
             catch
             { }
@@ -381,17 +379,17 @@ namespace ProxyON
             string proxyServerValor = "";
             string proxyOverrideValor = "";
 
-            if (!perfilActual.servidor.Equals("") && !perfilActual.porto.Equals(""))
+            if (!operacions.listaPerfiles[perfilActual].servidor.Equals("") && !operacions.listaPerfiles[perfilActual].porto.Equals(""))
             {
-                proxyServerValor = perfilActual.servidor + ":" + perfilActual.porto;
+                proxyServerValor = operacions.listaPerfiles[perfilActual].servidor + ":" + operacions.listaPerfiles[perfilActual].porto;
             }
 
-            if (!perfilActual.excepcions.Equals(""))
+            if (!operacions.listaPerfiles[perfilActual].excepcions.Equals(""))
             {
-                proxyOverrideValor = perfilActual.excepcions;
+                proxyOverrideValor = operacions.listaPerfiles[perfilActual].excepcions;
             }
 
-            if (perfilActual.direccionsLocais)
+            if (operacions.listaPerfiles[perfilActual].direccionsLocais)
             {
                 string pecharExcepcions = "";
                 if (proxyOverrideValor.Length > 0)
@@ -503,13 +501,13 @@ namespace ProxyON
             DLGPerfil frmAux = new DLGPerfil();
 
             // Carganse os datos do perfil actual
-            frmAux.encherDatos(perfilActual);
+            frmAux.encherDatos(operacions.listaPerfiles[perfilActual]);
 
             frmAux.ShowDialog();
 
             if (frmAux.DialogResult == DialogResult.OK)
             {
-                perfilActual = frmAux.perfilNovo;
+                operacions.listaPerfiles[perfilActual] = frmAux.perfilNovo;
             }
 
         }

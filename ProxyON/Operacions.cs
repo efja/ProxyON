@@ -20,9 +20,9 @@ namespace ProxyON
          * #  Atributos
          * #
          * ########################################################################################################################## */
-        private List<Perfil> listaPerfiles;
-        private string dirPerfiles;
-        
+        public List<Perfil> listaPerfiles { get; set; }
+        public string dirPerfiles { get; set; }
+
         /* ##########################################################################################################################
          * #
          * #  Constructores
@@ -37,31 +37,6 @@ namespace ProxyON
         public Operacions(string dirPerfiles, List<Perfil> listaPerfiles)
         {
             this.listaPerfiles = listaPerfiles;
-            this.dirPerfiles = dirPerfiles;
-        }
-
-        /* ##########################################################################################################################
-         * #
-         * #  Getters
-         * #
-         * ########################################################################################################################## */
-        public List<Perfil> getListaPerfiles()
-        {
-            return this.listaPerfiles;
-        }
-
-        public string getDirPerfiles()
-        {
-            return this.dirPerfiles;
-        }
-
-        /* ##########################################################################################################################
-         * #
-         * #  Setters
-         * #
-         * ########################################################################################################################## */
-        public void setDirPerfiles(string dirPerfiles)
-        {
             this.dirPerfiles = dirPerfiles;
         }
 
