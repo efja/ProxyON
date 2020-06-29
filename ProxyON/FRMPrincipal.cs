@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Diagnostics;
 using System.Collections.Generic;
+using System.IO;
 
 namespace ProxyON
 {
@@ -79,8 +80,6 @@ namespace ProxyON
             cargarOpcions();
             operacions = new Operacions(directorioPerfiles);
 
-            operacions.cargarListaPerfiles();
-
             cargarComboBoxPerfiles();
         }
 
@@ -141,7 +140,10 @@ namespace ProxyON
          ****************************************************************************************************************************/
         private void cargarComboBoxPerfiles()
         {
+            operacions.listaPerfiles.Clear();
             listadoPerfiles.Clear();
+
+            operacions.cargarListaPerfiles();
 
             try
             {
@@ -498,7 +500,7 @@ namespace ProxyON
          * Abre un subformulario para engadir un novo perfil ou cos datos do perfil activo para modificalo segundo que botón o
          * invoque
          ****************************************************************************************************************************/
-        private void engadirModificarPerfil(object sender, EventArgs e)
+        private void perfilEngadirModificarCopiar(object sender, EventArgs e)
         {
             try
             {
@@ -509,9 +511,12 @@ namespace ProxyON
                 if (chamador.Name.Equals("tsBtnModificar"))
                 {
                     modificar = true;
+                }
 
+                if (chamador.Name.Equals("tsBtnCopiar") || modificar)
+                {
                     // Carganse os datos do perfil actual
-                    frmAux.encherDatos(operacions.listaPerfiles[perfilActual]);
+                    frmAux.encherDatos(operacions.listaPerfiles[perfilActual], modificar);
                 }
 
                 frmAux.ShowDialog();
@@ -524,7 +529,14 @@ namespace ProxyON
                     }
                     else
                     {
-                        operacions.listaPerfiles.Add(frmAux.perfilNovo);
+                        foreach (Perfil perfil in operacions.listaPerfiles)
+                        {
+                            if (perfil.Equals(frmAux.perfilNovo) && operacions.comprobarDirectorio(directorioPerfiles))
+                            {
+                                MessageBox.Show("Non se pode gardar 2 perfiles co mesmo <Nome>", "Perfil duplicado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                return;
+                            }
+                        }
                     }
 
                     operacions.gardarPerfil(directorioPerfiles, frmAux.perfilNovo);
@@ -533,7 +545,7 @@ namespace ProxyON
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + "\n\n" + sender.GetType());
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -542,7 +554,25 @@ namespace ProxyON
          ****************************************************************************************************************************/
         private void tsBtnEliminar_Click(object sender, EventArgs e)
         {
-
+            try
+            {
+                DialogResult dialogResult = MessageBox.Show(
+                    "ATENCIÓN!!\n\nEste proceso é irreversible estás seguro de que queres borrar definitivamente o perfil <" + operacions.listaPerfiles[perfilActual].nome + ">?",
+                    "BORRAR PERFIL",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning
+                );
+                if (dialogResult == DialogResult.Yes)
+                {
+                    operacions.borrarPerfil(directorioPerfiles, operacions.listaPerfiles[perfilActual]);
+                    operacions.listaPerfiles.RemoveAt(perfilActual);
+                    cargarComboBoxPerfiles();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
 

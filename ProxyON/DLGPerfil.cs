@@ -19,13 +19,15 @@ namespace ProxyON
             InitializeComponent();
         }
 
-        public void encherDatos(Perfil perfil)
+        public void encherDatos(Perfil perfil, bool modificar)
         {
-                tbNome.Text = perfil.nome;
-                tbServidor.Text = perfil.servidor;
-                tbPorto.Text = perfil.porto;
-                tbExcepcions.Text = perfil.excepcions;
-                chbDireccionsLocais.Checked = perfil.direccionsLocais;
+            tbNome.Text = perfil.nome;
+            tbServidor.Text = perfil.servidor;
+            tbPorto.Text = perfil.porto;
+            tbExcepcions.Text = perfil.excepcions;
+            chbDireccionsLocais.Checked = perfil.direccionsLocais;
+
+            tbNome.Enabled = !modificar;
         }
 
         private void btnGardar_Click(object sender, EventArgs e)

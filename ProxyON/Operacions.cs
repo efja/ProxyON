@@ -43,13 +43,21 @@ namespace ProxyON
         #region OPERACIÓNS
         /* ##########################################################################################################################
          * #
-         * #  Outros métodos
+         * #  Operacións sobre ficheiros
          * #
          * ########################################################################################################################## */
 
         /****************************************************************************************************************************
-         * Carga un perfil dende un ficheiro dado
+         * Comproba se existe un direcotrio pasado
          ****************************************************************************************************************************/
+        public bool comprobarDirectorio(string rutaFicheiro)
+        {
+            return Directory.Exists(rutaFicheiro);
+        }
+
+        /****************************************************************************************************************************
+            * Carga un perfil dende un ficheiro dado
+            ****************************************************************************************************************************/
         public Perfil cargarPerfilDefecto()
         {
             Perfil resultado = null;
@@ -106,7 +114,7 @@ namespace ProxyON
         {
             DirectoryInfo directorio = new DirectoryInfo(this.dirPerfiles);
 
-            if (Directory.Exists(this.dirPerfiles) && directorio.GetFiles().Count() > 0)
+            if (comprobarDirectorio(this.dirPerfiles) && directorio.GetFiles().Count() > 0)
             {
 
                 foreach (var fPerfil in directorio.GetFiles("*.xml"))
@@ -128,7 +136,7 @@ namespace ProxyON
             try
             {
                 // Crea o directorio se non existe
-                if (!Directory.Exists(rutaPerfil))
+                if (!comprobarDirectorio(rutaPerfil))
                 {
                     Directory.CreateDirectory(rutaPerfil);
                 }
@@ -142,7 +150,7 @@ namespace ProxyON
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erro ó gardar o perfil: <" + rutaPerfil + ">\n" + ex.Message, "Erro ó gardar o perfil");
+                MessageBox.Show("Erro ó gardar o perfil: <" + rutaPerfil + "\\" + perfilGardar.nome + ".xml" + ">\n" + ex.Message, "Erro ó gardar o perfil");
             }
         }
 
@@ -156,6 +164,33 @@ namespace ProxyON
                 gardarPerfil(this.dirPerfiles, perfil);
             }
         }
+
+        /****************************************************************************************************************************
+         * Borra o perfil pasado
+         ****************************************************************************************************************************/
+        public void borrarPerfil(string rutaPerfil, Perfil perfilBorrar)
+        {
+            try
+            {
+                File.Delete(rutaPerfil + "\\" + perfilBorrar.nome + ".xml");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ó borrar o perfil: <" + rutaPerfil + "\\" + perfilBorrar.nome + ".xml" + ">\n" + ex.Message, "Erro ó borrar o perfil");
+            }
+        }
+
+        /****************************************************************************************************************************
+         * Borra tódolos perfiles da lista
+         ****************************************************************************************************************************/
+        public void borrarPerfiles()
+        {
+            foreach (Perfil perfil in this.listaPerfiles)
+            {
+                borrarPerfil(this.dirPerfiles, perfil);
+            }
+        }
+
         #endregion
     }
 }

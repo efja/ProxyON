@@ -37,26 +37,13 @@ namespace ProxyON
 
         /* ##########################################################################################################################
          * #
-         * #  Equals e HashCode
+         * #  Equals
          * #
          * ########################################################################################################################## */
         public override bool Equals(object obj)
         {
             return obj is Perfil perfil &&
-                   servidor == perfil.servidor &&
-                   porto == perfil.porto &&
-                   excepcions == perfil.excepcions &&
-                   direccionsLocais == perfil.direccionsLocais;
-        }
-
-        public override int GetHashCode()
-        {
-            var hashCode = 838977613;
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(servidor);
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(porto);
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(excepcions);
-            hashCode = hashCode * -1521134295 + direccionsLocais.GetHashCode();
-            return hashCode;
+                   nome == perfil.nome;
         }
     }
 }
