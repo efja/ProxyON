@@ -20,24 +20,30 @@ namespace ProxyON
          * #  Atributos
          * #
          * ########################################################################################################################## */
+        // Variable estática para a instancia (patrón Singleton)
+        private static readonly Lazy<Operacions> instancia = new Lazy<Operacions>(() => new Operacions());
+
+        // Propiedade para acceder á instancia
+        public static Operacions Instancia
+        {
+            get
+            {
+                return instancia.Value;
+            }
+        }
+
         public List<Perfil> listaPerfiles { get; set; }
-        public string dirPerfiles { get; set; }
 
         /* ##########################################################################################################################
          * #
          * #  Constructores
          * #
          * ########################################################################################################################## */
-        public Operacions(string dirPerfiles)
+
+        // Constructor privado para evitar la instanciación directa
+        private Operacions()
         {
             this.listaPerfiles = new List<Perfil>();
-            this.dirPerfiles = dirPerfiles;
-        }
-
-        public Operacions(string dirPerfiles, List<Perfil> listaPerfiles)
-        {
-            this.listaPerfiles = listaPerfiles;
-            this.dirPerfiles = dirPerfiles;
         }
 
         #region OPERACIÓNS
@@ -117,11 +123,11 @@ namespace ProxyON
         /****************************************************************************************************************************
          * Carga os perfiles
          ****************************************************************************************************************************/
-        public void cargarListaPerfiles()
+        public void cargarListaPerfiles(string dirPerfiles)
         {
-            DirectoryInfo directorio = new DirectoryInfo(this.dirPerfiles);
+            DirectoryInfo directorio = new DirectoryInfo(dirPerfiles);
 
-            if (comprobarDirectorio(this.dirPerfiles) && directorio.GetFiles().Count() > 0)
+            if (comprobarDirectorio(dirPerfiles) && directorio.GetFiles().Count() > 0)
             {
 
                 foreach (var fPerfil in directorio.GetFiles("*.xml"))
@@ -164,11 +170,11 @@ namespace ProxyON
         /****************************************************************************************************************************
          * Garda a información dos perfiles no directorio de perfiles
          ****************************************************************************************************************************/
-        public void gardarPerfiles()
+        public void gardarPerfiles(string dirPerfiles)
         {
             foreach (Perfil perfil in this.listaPerfiles)
             {
-                gardarPerfil(this.dirPerfiles, perfil);
+                gardarPerfil(dirPerfiles, perfil);
             }
         }
 
@@ -190,11 +196,6 @@ namespace ProxyON
         /****************************************************************************************************************************
          * Borra tódolos perfiles da lista
          ****************************************************************************************************************************/
-        public void borrarPerfiles()
-        {
-            borrarPerfiles(this.dirPerfiles);
-        }
-
         public void borrarPerfiles(string rutaPerfil)
         {
             foreach (Perfil perfil in this.listaPerfiles)

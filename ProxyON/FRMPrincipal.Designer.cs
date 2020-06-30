@@ -80,7 +80,7 @@
             // 
             this.IconaNotificacion.ContextMenuStrip = this.MenuIconaNotificacion;
             this.IconaNotificacion.Icon = ((System.Drawing.Icon)(resources.GetObject("IconaNotificacion.Icon")));
-            this.IconaNotificacion.Text = "notifyIcon1";
+            this.IconaNotificacion.Text = "ProxyON";
             this.IconaNotificacion.Visible = true;
             this.IconaNotificacion.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.IconaNotificacion_MouseDoubleClick);
             // 

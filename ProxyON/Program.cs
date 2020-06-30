@@ -18,7 +18,7 @@ namespace ProxyON
         {
             bool aberta;
 
-            using (Mutex mtex = new Mutex(true, "CambioPE", out aberta))
+            using (Mutex mtex = new Mutex(true, "ProxyON", out aberta))
             {
                 if (aberta)
                 {

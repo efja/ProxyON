@@ -9,6 +9,7 @@ using System.Security.Principal;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 
 namespace ProxyON
 {
@@ -49,7 +50,7 @@ namespace ProxyON
          ****************************************************************************************************************************/
         private bool arrancarIconizado = false;
 
-        private Operacions operacions;
+        private Operacions operacions = Operacions.Instancia;
         private string directorioPerfiles;
         private string perfilPorDefecto;
 
@@ -79,7 +80,6 @@ namespace ProxyON
         {
             estadoProxy();
             cargarOpcions();
-            operacions = new Operacions(@directorioPerfiles);
 
             cargarComboBoxPerfiles();
         }
@@ -123,7 +123,21 @@ namespace ProxyON
             {
                 // Carga a información do ficheiro de configuración
                 arrancarIconizado = Convert.ToBoolean(ConfigurationManager.AppSettings.Get("iconizado"));
+
+                // Directorio de perfiles
                 directorioPerfiles = ConfigurationManager.AppSettings.Get("perfiles");
+
+                // Se non hai valor gardado xenerase o directorio por defecto na ruta do executable
+                if (directorioPerfiles.Equals(""))
+                {
+                    directorioPerfiles = Application.StartupPath + "\\Perfiles";
+
+                    // Gardase o directorio por defecto coa ruta absoluta
+                    Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                    config.AppSettings.Settings["perfiles"].Value = directorioPerfiles;
+                    config.Save(ConfigurationSaveMode.Modified);
+                }
+
                 perfilPorDefecto = ConfigurationManager.AppSettings.Get("perfilPorDefecto");
 
                 // Actualiza a información do formulario
@@ -145,8 +159,9 @@ namespace ProxyON
         {
             operacions.listaPerfiles.Clear();
             listadoPerfiles.Clear();
+            cmboxPerfiles.Items.Clear();
 
-            operacions.cargarListaPerfiles();
+            operacions.cargarListaPerfiles(directorioPerfiles);
 
             try
             {
@@ -154,7 +169,6 @@ namespace ProxyON
                 {
                     listadoPerfiles.Add(perfil.nome);
                 }
-
             }
             catch (Exception ex)
             {
@@ -243,14 +257,21 @@ namespace ProxyON
 
                 try
                 {
+                    MessageBox.Show("O proceso de elvación de permisos cancela calquera operación anterior polo que terás que volver " +
+                        "a iniciar o proceso que provocou esta mensaxe ou non se producirá ningún cambio.\n\nDesculpa as molestias",
+                        "Cambiando permisos de execución como administrador",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Exclamation
+                    );
+
                     this.Close();
+                    Thread.Sleep(12); // Para darlle tempo a pechar a aplicación antes de volver a abrirse (só pode haber unha instancia aberta)
                     Process.Start(processInfo);
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.Message);
                 }
-
             }
         }
 
@@ -301,6 +322,7 @@ namespace ProxyON
         private void iniciarWindows()
         {
             RegistryKey inicio = null;
+            string rutaAplicacion = "";
 
             try
             {
@@ -324,7 +346,15 @@ namespace ProxyON
                                 return;
                         }
 
-                        inicio.SetValue(inicioWindowsClave, System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase, RegistryValueKind.String);
+                        rutaAplicacion = "\"" + Application.StartupPath + "\\" + AppDomain.CurrentDomain.FriendlyName + "\"";
+
+                        if (rutaAplicacion.Equals(""))
+                        {
+                            MessageBox.Show("Erro IMPORTANTE:\n\nNon se atopou a ruta do executable", "ATENCIÓN", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+
+                        inicio.SetValue(inicioWindowsClave, rutaAplicacion, RegistryValueKind.String);
                         break;
                     case 1:
                         inicio = Registry.CurrentUser.OpenSubKey(inicioWindows, true);
@@ -639,8 +669,6 @@ namespace ProxyON
                     config.AppSettings.Settings["perfiles"].Value = @directorioPerfiles;
                     config.Save(ConfigurationSaveMode.Modified);
 
-                    operacions.dirPerfiles = directorioPerfiles;
-
                     DialogResult moverPerfiles = MessageBox.Show("Queres intentar mover os perfiles que teñas gardados á nova ubicación?\n\nNOTA: Esta operación implica borrar os perfiles da ubicación actual",
                         "Mover Perfiles",
                         MessageBoxButtons.YesNo,
@@ -649,7 +677,7 @@ namespace ProxyON
 
                     if (moverPerfiles == DialogResult.Yes)
                     {
-                        operacions.gardarPerfiles();
+                        operacions.gardarPerfiles(directorioPerfiles);
                         operacions.borrarPerfiles(rutaPrevia);
                     }
                 }
