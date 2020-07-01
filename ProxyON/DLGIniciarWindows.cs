@@ -24,5 +24,10 @@ namespace ProxyON
         {
             DialogResult = DialogResult.Cancel;
         }
+
+        private void DLGIniciarWindows_Load(object sender, EventArgs e)
+        {
+            picBoxIcono.Image = System.Drawing.SystemIcons.Information.ToBitmap();
+        }
     }
 }

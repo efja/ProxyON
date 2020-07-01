@@ -32,17 +32,19 @@
             this.btnUsuario = new System.Windows.Forms.Button();
             this.btnSistema = new System.Windows.Forms.Button();
             this.btnCancelar = new System.Windows.Forms.Button();
+            this.picBoxIcono = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.picBoxIcono)).BeginInit();
             this.SuspendLayout();
             // 
             // lblInfo
             // 
             this.lblInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblInfo.Location = new System.Drawing.Point(12, 9);
+            this.lblInfo.Location = new System.Drawing.Point(85, 9);
             this.lblInfo.Name = "lblInfo";
-            this.lblInfo.Size = new System.Drawing.Size(400, 61);
+            this.lblInfo.Size = new System.Drawing.Size(315, 60);
             this.lblInfo.TabIndex = 0;
             this.lblInfo.Text = "Como queres que o aplicativo se inicie con Windows?";
-            this.lblInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblInfo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // btnUsuario
             // 
@@ -75,20 +77,32 @@
             this.btnCancelar.UseVisualStyleBackColor = true;
             this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
             // 
-            // FRMInicarWindows
+            // picBoxIcono
+            // 
+            this.picBoxIcono.Location = new System.Drawing.Point(25, 9);
+            this.picBoxIcono.Name = "picBoxIcono";
+            this.picBoxIcono.Size = new System.Drawing.Size(60, 60);
+            this.picBoxIcono.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.picBoxIcono.TabIndex = 4;
+            this.picBoxIcono.TabStop = false;
+            // 
+            // DLGIniciarWindows
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancelar;
             this.ClientSize = new System.Drawing.Size(424, 110);
+            this.Controls.Add(this.picBoxIcono);
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.btnSistema);
             this.Controls.Add(this.btnUsuario);
             this.Controls.Add(this.lblInfo);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.Name = "FRMInicarWindows";
+            this.Name = "DLGIniciarWindows";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Inicar con Windows";
+            this.Load += new System.EventHandler(this.DLGIniciarWindows_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.picBoxIcono)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -99,5 +113,6 @@
         private System.Windows.Forms.Button btnUsuario;
         private System.Windows.Forms.Button btnSistema;
         private System.Windows.Forms.Button btnCancelar;
+        private System.Windows.Forms.PictureBox picBoxIcono;
     }
 }

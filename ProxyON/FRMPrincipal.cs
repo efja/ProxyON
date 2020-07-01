@@ -641,7 +641,7 @@ namespace ProxyON
                     "ATENCIÓN!!\n\nEste proceso é irreversible estás seguro de que queres borrar definitivamente o perfil <" + operacions.listaPerfiles[perfilActual].nome + ">?",
                     "BORRAR PERFIL",
                     MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Warning
+                    MessageBoxIcon.Error
                 );
                 if (dialogResult == DialogResult.Yes)
                 {
