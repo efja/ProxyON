@@ -388,8 +388,11 @@ namespace ProxyON
             int status = 0;
 
             // Cambios de estética
-            string cadeaActivarProxy = "Activar PROXY";
-            string cadeaDesactivarProxy = "Desactivar PROXY";
+            string cadeaProxyActivar = "Activar PROXY";
+            string cadeaProxyDesactivar = "Desactivar PROXY";
+
+            string cadeaIcoActivado = Application.ProductName +  " - (Activado)";
+            string cadeaIcoDesactivado = Application.ProductName + " - (Desctivado)";
 
             Color corActivarProxy = Color.Maroon;
             Color corDesactivarProxy = Color.Green;
@@ -401,12 +404,15 @@ namespace ProxyON
 
                 if (status == 0)
                 {
-                    btnOnOff.Text = cadeaActivarProxy;
+                    btnOnOff.Text = cadeaProxyActivar;
                     btnOnOff.ForeColor = corActivarProxy;
 
-                    menuON.Text = cadeaActivarProxy;
+
+                    menuON.Text = cadeaProxyActivar;
                     menuON.ForeColor = corActivarProxy;
+
                     IconaNotificacion.Icon = Properties.Resources.NotifyIconGrey;
+                    IconaNotificacion.Text = cadeaIcoDesactivado;
 
                     activarTSPrincipal(true);
                     cmboxPerfiles.Enabled = true;
@@ -414,12 +420,14 @@ namespace ProxyON
                 }
                 else
                 {
-                    btnOnOff.Text = cadeaDesactivarProxy;
+                    btnOnOff.Text = cadeaProxyDesactivar;
                     btnOnOff.ForeColor = corDesactivarProxy;
-
-                    menuON.Text = cadeaDesactivarProxy;
+                    
+                    menuON.Text = cadeaProxyDesactivar;
                     menuON.ForeColor = corDesactivarProxy;
+
                     IconaNotificacion.Icon = Properties.Resources.NotifyIcon;
+                    IconaNotificacion.Text = cadeaIcoActivado;
 
                     activarTSPrincipal(false);
                     cmboxPerfiles.Enabled = false;
@@ -637,6 +645,16 @@ namespace ProxyON
                 );
                 if (dialogResult == DialogResult.Yes)
                 {
+                    // Se é o perfil por defecto borrase a configuración
+                    if (chbSeleccionado.Checked)
+                    {
+                        perfilPorDefecto =  "";
+
+                        Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                        config.AppSettings.Settings["perfilPorDefecto"].Value = perfilPorDefecto;
+                        config.Save(ConfigurationSaveMode.Modified);
+                    }
+
                     operacions.borrarPerfil(@directorioPerfiles, operacions.listaPerfiles[perfilActual]);
                     operacions.listaPerfiles.RemoveAt(perfilActual);
                     cargarComboBoxPerfiles();
