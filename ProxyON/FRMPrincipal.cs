@@ -82,6 +82,7 @@ namespace ProxyON
             cargarOpcions();
 
             cargarComboBoxPerfiles();
+            estadoProxy();
         }
 
         /****************************************************************************************************************************
@@ -387,12 +388,19 @@ namespace ProxyON
         {
             int status = 0;
 
-            // Cambios de estética
-            string cadeaProxyActivar = "Activar PROXY";
-            string cadeaProxyDesactivar = "Desactivar PROXY";
+            string cadeaProxyActual = "";
 
-            string cadeaIcoActivado = Application.ProductName +  " - (Activado)";
-            string cadeaIcoDesactivado = Application.ProductName + " - (Desctivado)";
+            if (operacions.listaPerfiles.Count > 0)
+            {
+                cadeaProxyActual = "<" + operacions.listaPerfiles[perfilActual].nome + "> ";
+            }
+
+            // Cambios de estética
+            string cadeaProxyActivar = "Activar PROXY ";
+            string cadeaProxyDesactivar = "Desactivar PROXY ";
+
+            string cadeaIcoActivado = Application.ProductName +  " (" + cadeaProxyActual + "Activado)";
+            string cadeaIcoDesactivado = Application.ProductName + " (" + cadeaProxyActual + "Desctivado)";
 
             Color corActivarProxy = Color.Maroon;
             Color corDesactivarProxy = Color.Green;
@@ -408,7 +416,7 @@ namespace ProxyON
                     btnOnOff.ForeColor = corActivarProxy;
 
 
-                    menuON.Text = cadeaProxyActivar;
+                    menuON.Text = cadeaProxyActivar + cadeaProxyActual;
                     menuON.ForeColor = corActivarProxy;
 
                     IconaNotificacion.Icon = Properties.Resources.NotifyIconGrey;
@@ -423,7 +431,7 @@ namespace ProxyON
                     btnOnOff.Text = cadeaProxyDesactivar;
                     btnOnOff.ForeColor = corDesactivarProxy;
                     
-                    menuON.Text = cadeaProxyDesactivar;
+                    menuON.Text = cadeaProxyDesactivar + cadeaProxyActual;
                     menuON.ForeColor = corDesactivarProxy;
 
                     IconaNotificacion.Icon = Properties.Resources.NotifyIcon;
