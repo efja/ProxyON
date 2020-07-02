@@ -5,6 +5,12 @@
 
 ---
 
+## LICENCIA
+
+Este software licenciase baixo as condicións descritas no ficheiro [LICENSE.md] que se incormpora na raíz desde repoisitorio. Dito ficheiro describe unha licenza [GNU-AGPL] da [FSF] (Free Software Foundation).
+
+---
+
 ## DESCRICIÓN DA INTERFACE
 
 ### Formulario principal
@@ -188,6 +194,16 @@ __* Se a entrada xa está (en calquiera das 2 ramas do rexistro) bórrase para e
 
 __** Sobrescríbese a configuración actual de Windows__
 
+---
+
+## DESCARGAS
+
+Podedes acceder á sección de [releases] para descargar calquera versión dos ficheiros binarios.
+
+## Notificar un erro
+
+Se atopaches un erro por favor acude á sección [Notificando unha incidencia][NovaIncidencia] do ficheiro [CONTRIBUTING] e notificao, agradezoche toda a axuda que poidas ofrecer.
+
 [//]: # (Listado dos links empregados)
 
    <!-- Licencia -->
@@ -199,7 +215,14 @@ __** Sobrescríbese a configuración actual de Windows__
    [CONTRIBUTING]: <CONTRIBUTING.md>
    [NovaIncidencia]: <CONTRIBUTING.md#notificando-unha-incidencia>
 
+   <!-- Enlaces internos -->
+
+   [releases]: <https://github.com/efja/ProxyON/releases>
+
    <!-- Enlaces a terceiros -->
+
+   [FSF]: <https://www.fsf.org/es>
+   [GNU-AGPL]: <https://www.gnu.org/licenses/agpl-3.0.html>
 
    [base]: <https://cybermcp.blogspot.com/2014/02/bat-para-activar-y-desactivar-proxy-en.html>
 

@@ -20,7 +20,6 @@ Se non eres unha persoa que se proveña do mundo da informática podes colaborar
 * Notificando erros na súa execución
 * Propoñendo funcionalidades que lle falten por implementar para adecuarse ó teu sector
 * Propoñendo melloras na interface de usuario, por exemplo poñer máis accesible unha opción que estea moi escondida
-* Propoñendo ampliar ou reducir ciclos de estados de algunha entidade (Equipos, Incidencias, Produtos...)
 * Traducindo o proxecto
 * Colaborando cá edición da documentación de emprego
 
@@ -34,28 +33,12 @@ Se tes experiencia programando podes contribuir:
 * Mellorando ou engadindo informes
 * Colaborando cá edición da documentación técnica
 
-### Notificando unha incidencia
-
-Se queres crear unha incidencia emprega un dos seguintes enlaces:
-
-| ENLACE                                    | FUNCIÓN
-|:-                                         |:-
-| [Erro no programa][ErroPrograma]          | Notificar un erro ó empregar o programa
-| [Erro na documentación][ErroDoc]          | Notificar un erro na documentación
-|                                           |
-| [Nova funcionalidade][NovaFunionalidade]  | Propoñer unha nova funcionalidade para mellorar o alcance do programa
-| [Mellora da interface][MelloraInterface]  | Propoñer un cambio na interface, ben para corrixir un erro ou ben para facela máis manexable
-|                                           |
-| [Nova incidencia][NovaIncidencia]         | Crear calquera outra incidencia
-
-
-
 ### Creando código
 
 Se modificaches de algún dos xeitos anteriores o contido deste respositorio sería de agradecer que axudases a integrar esos cambios a **ProxyON**. A maneria de facelo é a seguinte:
 
 1. Fai un fork do repositorio
-2. Fai os cambios que consideres oportunos pero intenta dividir as melloras en bloques de funcionalidade, é dicir, se vas a facer melloras na wiki sobre o emprego dunha característica e ademais vas a mellorar o modelo **Equipos** da BD faino en ramas separadas para poder integralos cambios por separado
+2. Fai os cambios que consideres oportunos pero intenta dividir as melloras en bloques de funcionalidade, é dicir, se vas a facer melloras na wiki sobre o emprego dunha característica e ademais vas a mellorar o modelo de **Perfiles** faino en ramas separadas para poder integralos cambios por separado
 3. Fai un `pull request` por cada mellor que queiras aportar
 4. Cando estea feita unha análise das melloras, se se considera oportuno, incluirase no repositorio oficial
 
